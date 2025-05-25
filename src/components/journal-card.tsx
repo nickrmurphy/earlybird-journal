@@ -1,12 +1,12 @@
 import { Link } from "wouter";
-import { useRootJournal } from "@/hooks/use-root-journal";
+import { useJournalById } from "@/hooks";
 
 interface JournalCardProps {
 	journalId: string;
 }
 
 export const JournalCard = ({ journalId }: JournalCardProps) => {
-	const journal = useRootJournal(journalId);
+	const journal = useJournalById(journalId);
 	return (
 		<div className="mt-4 p-4 border rounded shadow">
 			<h2 className="text-2xl font-semibold">{journal.name}</h2>

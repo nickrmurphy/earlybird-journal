@@ -2,7 +2,7 @@ import { useRootStore } from "@/hooks";
 import { JournalCard } from "@/components";
 
 export const HomePage = () => {
-	const { journalIds, addJournal } = useRootStore();
+	const { ids: journalIds, actions } = useRootStore();
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -17,7 +17,7 @@ export const HomePage = () => {
 				type="button"
 				onClick={() => {
 					console.log("Adding journal");
-					addJournal({
+					actions.add({
 						name: "New Journal",
 						createdAt: new Date().toISOString(),
 					});
