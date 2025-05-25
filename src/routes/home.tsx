@@ -1,7 +1,6 @@
 import { useJournalList } from "@/hooks";
 import { Paper } from "@/components/surfaces";
 import { Button, JournalCard } from "@/components";
-import { PlusIcon } from "lucide-react";
 
 const WelcomeScreen = () => (
 	<Paper
@@ -34,20 +33,6 @@ export const HomePage = () => {
 	return ids.length === 0 ? (
 		<WelcomeScreen />
 	) : (
-		<div className="flex h-screen p-2">
-			<Paper asChild className="w-64 min-h-full p-4 flex flex-col">
-				<aside>
-					<Button>
-						Create a journal
-						<PlusIcon />
-					</Button>
-				</aside>
-			</Paper>
-			<main className="flex-1 overflow-y-auto grid grid-cols-2 gap-4 px-5">
-				{ids.map((id) => (
-					<JournalCard key={id} journalId={id} />
-				))}
-			</main>
-		</div>
+		ids.map((id) => <JournalCard key={id} journalId={id} />)
 	);
 };

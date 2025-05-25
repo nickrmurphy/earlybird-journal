@@ -16,7 +16,7 @@ export const JournalCard = ({ journalId }: JournalCardProps) => {
 			asChild
 		>
 			<Link href={`/journal/${journalId}`}>
-				<h2 className="text-xl font-bold font-serif">{journal.name}</h2>
+				<h2 className="text-xl font-bold font-serif">{journal.title}</h2>
 				<p className="mt-2 text-ink-black/70">
 					Created{" "}
 					{journal.createdAt ? getRelativeTime(journal.createdAt) : "Unknown"}

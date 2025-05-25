@@ -5,9 +5,13 @@ import { type Store, createStore } from "tinybase/with-schemas";
 
 const storeSchema = {
 	journals: {
-		name: {
+		title: {
 			type: "string",
 			default: "Unnamed Journal",
+		},
+		intention: {
+			type: "string",
+			default: "-",
 		},
 		createdAt: {
 			type: "string",
@@ -103,7 +107,8 @@ const storeSchema = {
 
 // Define interfaces
 interface IJournal {
-	name: string;
+	title: string;
+	intention: string;
 	createdAt: string;
 }
 
