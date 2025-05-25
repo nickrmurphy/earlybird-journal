@@ -7,3 +7,24 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 }
+
+@theme {
+	/* Ink colors */
+	--color-ink-black: #1a1a1a;
+	--color-ink-blue: #1e40af;
+	--color-ink-red: #dc2626;
+	
+	/* Material colors */
+	--color-leather-black: #0f0f0f;
+	
+	/* Surface colors */
+	--color-paper-white: #fefefe;
+	--color-paper-cream: #faf7f2;
+	--color-paper-aged: #f4f1ea;
+	--color-walnut: rgb(62, 40, 28);
+	--color-oak: #deb887;
+}
+
+body {
+	@apply bg-walnut;
+}
