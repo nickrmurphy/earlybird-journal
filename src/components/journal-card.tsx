@@ -9,7 +9,7 @@ interface JournalCardProps {
 export const JournalCard = ({ journalId }: JournalCardProps) => {
 	const journal = useJournalById(journalId);
 	return (
-		<Paper className="mt-4 p-4 border rounded shadow">
+		<Paper className="p-4">
 			<h2 className="text-xl font-bold font-serif">{journal.name}</h2>
 			<p className="mt-2 text-gray-600">
 				Created{" "}
