@@ -1,5 +1,5 @@
-import { useRow } from "@/stores/root";
+import { useRow } from "@/stores/journal";
 
 export const useJournalById = (journalId: string) => {
-	return useRow("journals", journalId, "root");
+	return useRow("journals", journalId);
 };

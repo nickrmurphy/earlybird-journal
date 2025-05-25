@@ -1,9 +1,9 @@
 import {
-	type IJournal,
 	useAddRowCallback,
 	useTable,
 	useRowIds,
-} from "@/stores/root";
+	type IJournal,
+} from "@/stores/journal";
 
 export const useJournalList = () => {
 	const data = useTable("journals", "root");
