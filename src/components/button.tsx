@@ -1,5 +1,6 @@
 import type { FC, ComponentPropsWithoutRef, ElementType } from "react";
 import { Children, cloneElement, isValidElement } from "react";
+import clsx from "clsx/lite";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";
@@ -24,7 +25,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 
 const sizeClasses: Record<ButtonSize, string> = {
 	sm: "px-3 py-1.5 text-sm",
-	md: "px-4 py-2 text-base",
+	md: "px-4 py-2 text-base [&>svg]:w-4 [&>svg]:h-4 gap-2",
 	lg: "px-6 py-3 text-lg",
 };
 
@@ -37,7 +38,12 @@ export const Button: FC<ButtonProps> = ({
 	className = "",
 	...props
 }) => {
-	const buttonClasses = `${variantClasses[variant]} ${sizeClasses[size]} font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] ${className}`;
+	const buttonClasses = clsx(
+		variantClasses[variant],
+		sizeClasses[size],
+		"font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] flex items-center justify-center",
+		className,
+	);
 
 	if (asChild && children) {
 		const child = Children.only(children);
@@ -45,7 +51,10 @@ export const Button: FC<ButtonProps> = ({
 			return cloneElement(child, {
 				...props,
 				...child.props,
-				className: `${buttonClasses} ${(child.props as { className?: string }).className || ""}`,
+				className: clsx(
+					buttonClasses,
+					(child.props as { className?: string }).className,
+				),
 			});
 		}
 	}

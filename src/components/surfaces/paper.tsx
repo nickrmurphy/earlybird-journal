@@ -27,7 +27,7 @@ export const Paper: FC<PaperProps> = ({
 }) => {
 	const paperClasses = clsx(
 		variantClasses[variant],
-		"shadow-md rounded-lg p-4",
+		"shadow-md rounded-lg",
 		className,
 	);
 
