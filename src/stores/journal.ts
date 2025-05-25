@@ -18,6 +18,20 @@ const storeSchema = {
 			default: new Date().toISOString(),
 		}
 	},
+	day: {
+		journalId: {
+			type: "string",
+			default: "",
+		},
+		title: {
+			type: "string",
+			default: new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" }),
+		},
+		date: {
+			type: "string", // YYYY-MM-DD - the day this journal belongs to
+			default: new Date().toISOString().split('T')[0],
+		},
+	},
 	notes: {
 		journalId: {
 			type: "string",
