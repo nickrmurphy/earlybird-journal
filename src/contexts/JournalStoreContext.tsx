@@ -1,14 +1,18 @@
 import type { FC, PropsWithChildren } from "react";
 import {
-	Provider,
+	JournalProvider,
 	useCreateJournalPersister,
 	useCreateJournalStore,
-} from "../store";
+} from "../stores";
 
 export const JournalStoreContext: FC<PropsWithChildren> = ({ children }) => {
 	const journalStore = useCreateJournalStore();
 
 	useCreateJournalPersister(journalStore);
 
-	return <Provider store={journalStore}>{children}</Provider>;
+	return (
+		<JournalProvider storesById={{ journal: journalStore }}>
+			{children}
+		</JournalProvider>
+	);
 };

@@ -1,14 +1,17 @@
 import "./App.css";
-import { useAddRowCallback, useTable } from "./store";
+import { useAddJournalRowCallback, useJournalTable } from "./stores";
 
 function App() {
-	const notes = useTable("notes");
-	const addNote = useAddRowCallback("notes", (values: { title: string }) => {
-		return {
-			title: values.title,
-			created: new Date().toISOString(),
-		};
-	});
+	const notes = useJournalTable("notes");
+	const addNote = useAddJournalRowCallback(
+		"notes",
+		(values: { title: string }) => {
+			return {
+				title: values.title,
+				created: new Date().toISOString(),
+			};
+		},
+	);
 
 	return (
 		<main>
