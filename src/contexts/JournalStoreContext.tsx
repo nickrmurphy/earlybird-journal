@@ -5,10 +5,12 @@ import {
 	useCreateJournalStore,
 } from "../stores";
 
-export const JournalStoreContext: FC<PropsWithChildren> = ({ children }) => {
+export const JournalStoreContext: FC<
+	PropsWithChildren & { journalId: string }
+> = ({ children, journalId }) => {
 	const journalStore = useCreateJournalStore();
 
-	useCreateJournalPersister(journalStore);
+	useCreateJournalPersister(journalStore, journalId);
 
 	return (
 		<JournalProvider storesById={{ journal: journalStore }}>

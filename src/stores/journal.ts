@@ -44,14 +44,14 @@ export const {
 	useJournalStore,
 	useSetJournalRowCallback,
 	useAddJournalRowCallback,
-	Provider: JournalProvider,
+	JournalProvider,
 } = {
 	useCreateJournalStore: () => UiReactWithSchemas.useCreateStore(() => createStore().setTablesSchema(journalSchema)),
-	useCreateJournalPersister: (store: Store<[typeof journalSchema, NoValuesSchema]>) =>
+	useCreateJournalPersister: (store: Store<[typeof journalSchema, NoValuesSchema]>, journalId: string) =>
 		UiReactWithSchemas.useCreatePersister(
 			store,
-			(store) => createIndexedDbPersister(store, "journal"),
-			[],
+			(store) => createIndexedDbPersister(store, `journal-${journalId}`),
+			[journalId],
 			async (persister) => {
 				await persister.startAutoLoad();
 				await persister.startAutoSave();
@@ -62,5 +62,5 @@ export const {
 	useJournalStore: UiReactWithSchemas.useStore,
 	useSetJournalRowCallback: UiReactWithSchemas.useSetRowCallback,
 	useAddJournalRowCallback: UiReactWithSchemas.useAddRowCallback,
-	Provider: UiReactWithSchemas.Provider,
+	JournalProvider: UiReactWithSchemas.Provider,
 };
