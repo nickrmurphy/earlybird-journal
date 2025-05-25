@@ -1,20 +1,20 @@
 import type { FC, PropsWithChildren } from "react";
 import {
-	JournalProvider,
-	useCreateJournalPersister,
-	useCreateJournalStore,
-} from "../stores";
+	Provider,
+	useCreatePersister,
+	useCreateStore,
+} from "../stores/journal";
 
 export const JournalStoreContext: FC<
 	PropsWithChildren & { journalId: string }
 > = ({ children, journalId }) => {
-	const journalStore = useCreateJournalStore();
+	const journalStore = useCreateStore();
 
-	useCreateJournalPersister(journalStore, journalId);
+	useCreatePersister(journalStore, journalId);
 
 	return (
-		<JournalProvider storesById={{ journal: journalStore }}>
+		<Provider storesById={{ journal: journalStore }}>
 			{children}
-		</JournalProvider>
+		</Provider>
 	);
 };

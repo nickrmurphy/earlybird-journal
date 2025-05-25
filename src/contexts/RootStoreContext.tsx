@@ -1,16 +1,14 @@
 import type { FC, PropsWithChildren } from "react";
 import {
-	RootProvider,
+	Provider,
 	useCreateRootPersister,
 	useCreateRootStore,
-} from "../stores";
+} from "../stores/root";
 
 export const RootStoreContext: FC<PropsWithChildren> = ({ children }) => {
 	const rootStore = useCreateRootStore();
 
 	useCreateRootPersister(rootStore);
 
-	return (
-		<RootProvider storesById={{ root: rootStore }}>{children}</RootProvider>
-	);
+	return <Provider storesById={{ root: rootStore }}>{children}</Provider>;
 };

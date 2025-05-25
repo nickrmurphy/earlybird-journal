@@ -1,7 +1,7 @@
 import { createIndexedDbPersister } from "tinybase/persisters/persister-indexed-db/with-schemas";
 import * as UiReact from "tinybase/ui-react/with-schemas";
 import type { NoValuesSchema } from "tinybase/with-schemas";
-import { type Store, createStore } from "tinybase/with-schemas";
+import { type Store, createStore  } from "tinybase/with-schemas";
 
 const journalSchema = {
 	meta: {
@@ -32,35 +32,20 @@ const journalSchema = {
 
 
 // Cast the whole module to be schema-based with WithSchemas:
-const UiReactWithSchemas = UiReact as UiReact.WithSchemas<
+const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider } = UiReact as UiReact.WithSchemas<
 	[typeof journalSchema, NoValuesSchema]
 >;
 
-export const {
-	useCreateJournalStore,
-	useJournalRow,
-	useJournalTable,
-	useCreateJournalPersister,
-	useJournalStore,
-	useSetJournalRowCallback,
-	useAddJournalRowCallback,
-	JournalProvider,
-} = {
-	useCreateJournalStore: () => UiReactWithSchemas.useCreateStore(() => createStore().setTablesSchema(journalSchema)),
-	useCreateJournalPersister: (store: Store<[typeof journalSchema, NoValuesSchema]>, journalId: string) =>
-		UiReactWithSchemas.useCreatePersister(
-			store,
-			(store) => createIndexedDbPersister(store, `journal-${journalId}`),
-			[journalId],
-			async (persister) => {
-				await persister.startAutoLoad();
-				await persister.startAutoSave();
-			},
-		),
-	useJournalRow: UiReactWithSchemas.useRow,
-	useJournalTable: UiReactWithSchemas.useTable,
-	useJournalStore: UiReactWithSchemas.useStore,
-	useSetJournalRowCallback: UiReactWithSchemas.useSetRowCallback,
-	useAddJournalRowCallback: UiReactWithSchemas.useAddRowCallback,
-	JournalProvider: UiReactWithSchemas.Provider,
-};
+export { Provider };
+
+export const useCreateStore = () => useCreateStoreBase(() => createStore().setTablesSchema(journalSchema))
+export const useCreatePersister = (store: Store<[typeof journalSchema, NoValuesSchema]>, journalId: string) =>
+	useCreatePersisterBase(
+		store,
+		(store) => createIndexedDbPersister(store, `journal-${journalId}`),
+		[journalId],
+		async (persister) => {
+			await persister.startAutoLoad();
+			await persister.startAutoSave();
+		},
+	)

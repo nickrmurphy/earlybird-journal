@@ -21,7 +21,7 @@ const rootSchema = {
 
 
 // Cast the whole module to be schema-based with WithSchemas:
-const UiReactWithSchemas = UiReact as UiReact.WithSchemas<
+const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider, useTable: useTableBase, useAddRowCallback: useAddRowCallbackBase } = UiReact as UiReact.WithSchemas<
     [typeof rootSchema, NoValuesSchema]
 >;
 
@@ -29,25 +29,18 @@ export type {
     IJournal,
 }
 
-export const {
-    useCreateRootStore,
-    useCreateRootPersister,
-    useRootTable,
-    useAddRootRowCallback,
-    RootProvider,
-} = {
-    useCreateRootStore: () => UiReactWithSchemas.useCreateStore(() => createStore().setTablesSchema(rootSchema)),
-    useCreateRootPersister: (store: Store<[typeof rootSchema, NoValuesSchema]>) =>
-        UiReactWithSchemas.useCreatePersister(
-            store,
-            (store) => createIndexedDbPersister(store, "root"),
-            [],
-            async (persister) => {
-                await persister.startAutoLoad();
-                await persister.startAutoSave();
-            },
-        ),
-    RootProvider: UiReactWithSchemas.Provider,
-    useRootTable: UiReactWithSchemas.useTable,
-    useAddRootRowCallback: UiReactWithSchemas.useAddRowCallback,
-};
+export { Provider };
+
+export const useCreateRootStore = () => useCreateStoreBase(() => createStore().setTablesSchema(rootSchema))
+export const useCreateRootPersister = (store: Store<[typeof rootSchema, NoValuesSchema]>) =>
+    useCreatePersisterBase(
+        store,
+        (store) => createIndexedDbPersister(store, "root"),
+        [],
+        async (persister) => {
+            await persister.startAutoLoad();
+            await persister.startAutoSave();
+        },
+    )
+export const useRootTable = useTableBase
+export const useAddRowCallback = useAddRowCallbackBase
