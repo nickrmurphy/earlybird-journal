@@ -7,12 +7,10 @@ export const App = () => (
 		<Route
 			path="/journal/:journalId"
 			component={() => {
-				const { journalId } = useParams();
+				const { journalId } = useParams<{ journalId: string }>();
 				return (
-					// biome-ignore lint/style/noNonNullAssertion: journalId is always defined in this route
-					<JournalStoreContext journalId={journalId!}>
+					<JournalStoreContext journalId={journalId}>
 						<div>Journal Page for {journalId}</div>
-						{/* Add your journal components here */}
 					</JournalStoreContext>
 				);
 			}}
