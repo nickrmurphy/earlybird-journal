@@ -10,7 +10,7 @@ interface JournalCardProps {
 export const JournalCard = ({ journalId }: JournalCardProps) => {
 	const journal = useJournalById(journalId);
 	return (
-		<Paper className="p-4" asChild>
+		<Paper className="p-4" variant="cream" asChild>
 			<Link href={`/journal/${journalId}`}>
 				<h2 className="text-xl font-bold font-serif">{journal.name}</h2>
 				<p className="mt-2 text-gray-600">
