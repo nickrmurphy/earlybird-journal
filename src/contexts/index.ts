@@ -1,2 +1,2 @@
-export * from "@/contexts/JournalStoreContext";
-export * from "@/contexts/RootStoreContext";
+export * from "@/contexts/journal-store-context";
+export * from "@/contexts/root-store-context";

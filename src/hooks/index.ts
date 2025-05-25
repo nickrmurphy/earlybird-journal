@@ -1,1 +1,1 @@
-export * from "@/hooks/useRootStore";
+export * from "@/hooks/use-root-store";

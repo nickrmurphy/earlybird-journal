@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useRootJournal } from "@/hooks/useRootJournal";
+import { useRootJournal } from "@/hooks/use-root-journal";
 
 interface JournalCardProps {
 	journalId: string;

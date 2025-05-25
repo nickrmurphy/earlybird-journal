@@ -1,1 +1,1 @@
-export { JournalCard } from "./JournalCard";
+export { JournalCard } from "./journal-card";
