@@ -9,9 +9,9 @@ type PaperProps<T extends ElementType = "div"> = {
 } & ComponentPropsWithoutRef<T>;
 
 const variantClasses: Record<PaperVariant, string> = {
-	white: "bg-paper-white",
-	cream: "bg-paper-cream",
-	aged: "bg-paper-aged",
+	white: "bg-paper-white/95",
+	cream: "bg-paper-cream/95",
+	aged: "bg-paper-aged/95",
 };
 
 export const Paper: FC<PaperProps> = ({

@@ -9,6 +9,10 @@
 }
 
 @theme {
+	/* Font families */
+	--font-sans: "Karla", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+	
 	/* Ink colors */
 	--color-ink-black: #1a1a1a;
 	--color-ink-blue: #1e40af;
@@ -21,10 +25,8 @@
 	--color-paper-white: #fefefe;
 	--color-paper-cream: #faf7f2;
 	--color-paper-aged: #f4f1ea;
-	--color-walnut: rgb(62, 40, 28);
-	--color-oak: #deb887;
 }
 
 body {
-	@apply bg-walnut;
+	@apply bg-leather-black font-sans;
 }

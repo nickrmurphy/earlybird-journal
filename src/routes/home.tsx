@@ -1,36 +1,59 @@
 import { useJournalList } from "@/hooks";
-import { JournalCard } from "@/components";
 import { Paper } from "@/components/surfaces";
+import { Button } from "@/components";
 
 export const HomePage = () => {
-	const { ids: journalIds, actions } = useJournalList();
-
+	const { actions } = useJournalList();
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen py-2">
-			<Paper>
-				<h1 className="text-4xl font-bold">Welcome to the Journal App</h1>
-				<p className="mt-4 text-lg">
-					This is a simple journal application built with React and TypeScript.
-				</p>
-				<p className="mt-2 text-lg">
-					You can create, read, update, and delete journal entries.
-				</p>
-			</Paper>
-			<button
-				type="button"
-				onClick={() => {
-					console.log("Adding journal");
-					actions.add({
-						name: "New Journal",
-						createdAt: new Date().toISOString(),
-					});
-				}}
-			>
-				Add journal
-			</button>
-			{journalIds.map((id) => (
-				<JournalCard key={id} journalId={id} />
-			))}
-		</div>
+		<Paper
+			variant="cream"
+			className="fixed inset-1 flex flex-col items-center justify-center"
+		>
+			<main className="p-4 space-y-8">
+				<div className="space-y-4">
+					<h1 className="text-3xl font-bold font-serif text-ink-black">
+						Welcome to Your Digital Bullet Journal
+					</h1>
+					<p className="text-lg text-ink-black/80">
+						A bullet journal is your personal organization system—a place to
+						track your daily tasks, capture thoughts, set goals, and reflect on
+						your journey.
+					</p>
+				</div>
+				<div className="text-center">
+					<Button
+						size="lg"
+						onClick={() => {
+							const today = new Date();
+							const monthNames = [
+								"January",
+								"February",
+								"March",
+								"April",
+								"May",
+								"June",
+								"July",
+								"August",
+								"September",
+								"October",
+								"November",
+								"December",
+							];
+							const journalName = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+
+							actions.add({
+								name: journalName,
+								createdAt: new Date().toISOString(),
+							});
+						}}
+					>
+						Start My First Journal
+					</Button>
+					<p className="text-sm text-ink-black/60 mt-2">
+						We'll create a journal for this month to get you started
+					</p>
+				</div>
+			</main>
+		</Paper>
 	);
 };
