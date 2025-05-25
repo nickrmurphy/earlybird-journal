@@ -1,7 +1,13 @@
-import { type IJournal, useAddRowCallback, useRootTable } from "@/stores/root";
+import {
+	type IJournal,
+	useAddRowCallback,
+	useTable,
+	useRowIds,
+} from "@/stores/root";
 
 export const useRootStore = () => {
-	const journals = useRootTable("journals", "root");
+	const journals = useTable("journals", "root");
+	const journalIds = useRowIds("journals", "root");
 
 	const addJournal = useAddRowCallback(
 		"journals",
@@ -12,6 +18,7 @@ export const useRootStore = () => {
 
 	return {
 		journals,
+		journalIds,
 		addJournal,
 	};
 };
