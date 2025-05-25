@@ -6,15 +6,10 @@ import {
 } from "@/stores/journal";
 
 export const useJournalList = () => {
-	const data = useTable("journals", "root");
-	const ids = useRowIds("journals", "root");
+	const data = useTable("journals");
+	const ids = useRowIds("journals");
 
-	const add = useAddRowCallback(
-		"journals",
-		(journal: IJournal) => journal,
-		[],
-		"root",
-	);
+	const add = useAddRowCallback("journals", (journal: IJournal) => journal, []);
 
 	return {
 		data,
