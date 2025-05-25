@@ -16,24 +16,16 @@ export const App = () => (
 					return <JournalPage journalId={journalId} />;
 				}}
 			/>
-			<Route
-				path="/new"
-				component={() => (
-					<HomePageLayout>
-						<NewJournalPage />
-					</HomePageLayout>
-				)}
-			/>
-			<Route
-				path="/"
-				component={() => (
-					<HomePageLayout>
-						<HomePage />
-					</HomePageLayout>
-				)}
-			/>
 			<Route>
-				<div className="text-white">404: No such page!</div>
+				<HomePageLayout>
+					<Switch>
+						<Route path="/new" component={NewJournalPage} />
+						<Route path="/" component={HomePage} />
+						<Route>
+							<div className="text-white">404: No such page!</div>
+						</Route>
+					</Switch>
+				</HomePageLayout>
 			</Route>
 		</Switch>
 	</JournalStoreContext>
