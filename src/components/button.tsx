@@ -1,10 +1,12 @@
 import type { FC, ComponentPropsWithoutRef, ElementType } from "react";
+import { Children, cloneElement, isValidElement } from "react";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps<T extends ElementType = "button"> = {
 	as?: T;
+	asChild?: boolean;
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	children?: React.ReactNode;
@@ -28,16 +30,29 @@ const sizeClasses: Record<ButtonSize, string> = {
 
 export const Button: FC<ButtonProps> = ({
 	as: Component = "button",
+	asChild = false,
 	variant = "primary",
 	size = "md",
 	children,
 	className = "",
 	...props
-}) => (
-	<Component
-		className={`${variantClasses[variant]} ${sizeClasses[size]} font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] ${className}`}
-		{...props}
-	>
-		{children}
-	</Component>
-);
+}) => {
+	const buttonClasses = `${variantClasses[variant]} ${sizeClasses[size]} font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] ${className}`;
+
+	if (asChild && children) {
+		const child = Children.only(children);
+		if (isValidElement(child)) {
+			return cloneElement(child, {
+				...props,
+				...child.props,
+				className: `${buttonClasses} ${(child.props as { className?: string }).className || ""}`,
+			});
+		}
+	}
+
+	return (
+		<Component className={buttonClasses} {...props}>
+			{children}
+		</Component>
+	);
+};
