@@ -1,8 +1,8 @@
-import { useRootStore } from "@/hooks";
+import { useJournalList } from "@/hooks";
 import { JournalCard } from "@/components";
 
 export const HomePage = () => {
-	const { ids: journalIds, actions } = useRootStore();
+	const { ids: journalIds, actions } = useJournalList();
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen py-2">
