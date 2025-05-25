@@ -10,7 +10,7 @@ export const NewJournalPage = () => {
 	const [, navigate] = useLocation();
 	const { create } = useCreateJournal({
 		onSuccess: (rowId) => {
-			navigate(`/journals/${rowId}`);
+			navigate(`/journal/${rowId}`);
 		},
 	});
 

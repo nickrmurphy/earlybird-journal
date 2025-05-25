@@ -6,7 +6,7 @@ import { Link, useRoute } from "wouter";
 
 const NewJournalButton = () => (
 	<Button asChild>
-		<Link href="/new">
+		<Link href="~/new">
 			Create a journal
 			<PlusIcon />
 		</Link>

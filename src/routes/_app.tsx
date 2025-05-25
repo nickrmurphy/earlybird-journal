@@ -8,20 +8,30 @@ import { NewJournalPage } from "./new-journal";
 export const App = () => (
 	<JournalStoreContext>
 		<Switch>
-			<Route path="/" nest>
-				<HomePageLayout>
-					<Route path="/" component={HomePage} />
-					<Route path="/new" component={NewJournalPage} />
-				</HomePageLayout>
-			</Route>
 			<Route
 				path="/journal/:journalId"
 				component={() => {
+					console.log("Journal page");
 					const { journalId } = useParams<{ journalId: string }>();
 					return <JournalPage journalId={journalId} />;
 				}}
 			/>
-			{/* Default route in a switch */}
+			<Route
+				path="/new"
+				component={() => (
+					<HomePageLayout>
+						<NewJournalPage />
+					</HomePageLayout>
+				)}
+			/>
+			<Route
+				path="/"
+				component={() => (
+					<HomePageLayout>
+						<HomePage />
+					</HomePageLayout>
+				)}
+			/>
 			<Route>
 				<div className="text-white">404: No such page!</div>
 			</Route>
