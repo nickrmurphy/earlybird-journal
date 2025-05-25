@@ -1,7 +1,7 @@
 import { createIndexedDbPersister } from "tinybase/persisters/persister-indexed-db/with-schemas";
 import * as UiReact from "tinybase/ui-react/with-schemas";
 import type { NoValuesSchema } from "tinybase/with-schemas";
-import { type Store, createStore  } from "tinybase/with-schemas";
+import { type Store, createStore } from "tinybase/with-schemas";
 
 const journalSchema = {
 	meta: {
@@ -31,12 +31,19 @@ const journalSchema = {
 } as const;
 
 
+// Define the note interface based on the journal schema
+interface INote {
+	title: string;
+	createdAt: string;
+}
+
 // Cast the whole module to be schema-based with WithSchemas:
-const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider } = UiReact as UiReact.WithSchemas<
+const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider, useTable, useAddRowCallback, useRowIds } = UiReact as UiReact.WithSchemas<
 	[typeof journalSchema, NoValuesSchema]
 >;
 
-export { Provider };
+export type { INote };
+export { Provider, useTable, useAddRowCallback, useRowIds };
 
 export const useCreateStore = () => useCreateStoreBase(() => createStore().setTablesSchema(journalSchema))
 export const useCreatePersister = (store: Store<[typeof journalSchema, NoValuesSchema]>, journalId: string) =>

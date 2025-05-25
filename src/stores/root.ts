@@ -21,7 +21,7 @@ const rootSchema = {
 
 
 // Cast the whole module to be schema-based with WithSchemas:
-const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider, useTable, useAddRowCallback, useRowIds } = UiReact as UiReact.WithSchemas<
+const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider, useTable, useAddRowCallback, useRowIds, useRow } = UiReact as UiReact.WithSchemas<
     [typeof rootSchema, NoValuesSchema]
 >;
 
@@ -29,7 +29,7 @@ export type {
     IJournal,
 }
 
-export { Provider, useTable, useAddRowCallback, useRowIds };
+export { Provider, useTable, useAddRowCallback, useRowIds, useRow };
 
 export const useCreateRootStore = () => useCreateStoreBase(() => createStore().setTablesSchema(rootSchema))
 export const useCreateRootPersister = (store: Store<[typeof rootSchema, NoValuesSchema]>) =>

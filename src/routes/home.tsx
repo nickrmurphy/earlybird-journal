@@ -1,8 +1,8 @@
 import { useRootStore } from "@/hooks";
-import { Link } from "wouter";
+import { JournalCard } from "@/components";
 
 export const HomePage = () => {
-	const { journals, addJournal } = useRootStore();
+	const { journalIds, addJournal } = useRootStore();
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -25,21 +25,8 @@ export const HomePage = () => {
 			>
 				Add journal
 			</button>
-			<p>{JSON.stringify(journals)}</p>
-
-			{Object.entries(journals).map(([id, journal]) => (
-				<div key={id} className="mt-4 p-4 border rounded shadow">
-					<h2 className="text-2xl font-semibold">{journal.name}</h2>
-					<p className="mt-2 text-gray-600">
-						Created at: {new Date(journal.createdAt!).toLocaleString()}
-					</p>
-					<Link
-						href={`/journal/${id}`}
-						className="mt-2 text-blue-500 hover:underline"
-					>
-						View Journal
-					</Link>
-				</div>
+			{journalIds.map((id) => (
+				<JournalCard key={id} journalId={id} />
 			))}
 		</div>
 	);
