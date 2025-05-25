@@ -33,7 +33,7 @@ export const HomePage = () => {
 	return ids.length === 0 ? (
 		<WelcomeScreen />
 	) : (
-		<main className="flex flex-col gap-4 p-4">
+		<main className="flex flex-col p-4 gap-4 bg-paper-aged">
 			{ids.map((id) => (
 				<JournalCard key={id} journalId={id} />
 			))}

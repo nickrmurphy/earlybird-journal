@@ -17,7 +17,7 @@ export function JournalPage({ journalId }: { journalId: string }) {
 			ref={scrollRef}
 			className="overflow-x-auto h-screen no-scrollbar scroll-smooth snap-x snap-mandatory"
 		>
-			<div className="grid grid-cols-3 gap-6 h-screen p-1 w-[150vw]">
+			<div className="grid grid-cols-3 gap-5 h-screen p-1 w-[150vw]">
 				<div className="h-full snap-center">
 					<Paper
 						variant="cream"

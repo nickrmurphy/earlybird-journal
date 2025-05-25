@@ -27,10 +27,6 @@
 	--color-paper-aged: #f4f1ea;
 }
 
-body {
-	@apply bg-leather-black font-sans;
-}
-
 @utility no-scrollbar {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
@@ -39,3 +35,13 @@ body {
 		display: none;
 	}
 }
+
+* {
+	@apply no-scrollbar;
+}
+
+body {
+	@apply bg-leather-black font-sans;
+	
+}
+
