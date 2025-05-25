@@ -1,5 +1,5 @@
-import { useRootStore } from "../hooks";
-import {Link} from "wouter";
+import { useRootStore } from "@/hooks";
+import { Link } from "wouter";
 
 export const HomePage = () => {
 	const { journals, addJournal } = useRootStore();

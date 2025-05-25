@@ -3,7 +3,7 @@ import {
 	Provider,
 	useCreateRootPersister,
 	useCreateRootStore,
-} from "../stores/root";
+} from "@/stores/root";
 
 export const RootStoreContext: FC<PropsWithChildren> = ({ children }) => {
 	const rootStore = useCreateRootStore();

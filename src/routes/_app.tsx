@@ -1,6 +1,6 @@
 import { Route, Switch, useParams } from "wouter";
-import { JournalStoreContext, RootStoreContext } from "../contexts";
-import { HomePage } from "./home";
+import { JournalStoreContext, RootStoreContext } from "@/contexts";
+import { HomePage } from "@/routes/home";
 
 export const App = () => (
 	<RootStoreContext>
