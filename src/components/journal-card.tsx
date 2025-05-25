@@ -1,5 +1,6 @@
-import { Link } from "wouter";
 import { useJournalById } from "@/hooks";
+import { Paper } from "./surfaces";
+import { getRelativeTime } from "@/utils/time";
 
 interface JournalCardProps {
 	journalId: string;
@@ -8,20 +9,12 @@ interface JournalCardProps {
 export const JournalCard = ({ journalId }: JournalCardProps) => {
 	const journal = useJournalById(journalId);
 	return (
-		<div className="mt-4 p-4 border rounded shadow">
-			<h2 className="text-2xl font-semibold">{journal.name}</h2>
+		<Paper className="mt-4 p-4 border rounded shadow">
+			<h2 className="text-xl font-bold font-serif">{journal.name}</h2>
 			<p className="mt-2 text-gray-600">
-				Created at:{" "}
-				{journal.createdAt
-					? new Date(journal.createdAt).toLocaleString()
-					: "Unknown"}
+				Created{" "}
+				{journal.createdAt ? getRelativeTime(journal.createdAt) : "Unknown"}
 			</p>
-			<Link
-				href={`/journal/${journalId}`}
-				className="mt-2 text-blue-500 hover:underline"
-			>
-				View Journal
-			</Link>
-		</div>
+		</Paper>
 	);
 };
