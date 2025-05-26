@@ -1,13 +1,13 @@
 import { Button } from "@/components";
 import { Paper } from "@/components/surfaces";
-import { useJournalByIdDb } from "@/hooks/use-journal-by-id";
+import { useJournalById } from "@/hooks";
 import { getRelativeTime } from "@/utils/time";
 import { LibraryIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export function JournalPage({ journalId }: { journalId: string }) {
 	const scrollRef = useRef<HTMLDivElement>(null);
-	const { row, isLoading } = useJournalByIdDb(journalId);
+	const { row, isLoading } = useJournalById(journalId);
 
 	useEffect(() => {
 		if (scrollRef.current) {

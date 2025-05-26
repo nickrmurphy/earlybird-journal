@@ -1,11 +1,3 @@
-import { useRow } from "@/stores/journal";
-
-export const useJournalById = (journalId: string) => {
-	return useRow("journals", journalId);
-};
-
-// export const getUsersQuery = () => db.select().from(users);
-
 import { db } from "@/db/db";
 import { journals } from "@/db/schema";
 import { useLiveQuery } from "@electric-sql/pglite-react";
@@ -19,7 +11,7 @@ type JournalQuery = ReturnType<typeof getJournalQuery>;
 type JournalQueryResult = Awaited<ReturnType<JournalQuery["execute"]>>;
 type Journal = JournalQueryResult[0];
 
-export function useJournalByIdDb(journalId: string) {
+export function useJournalById(journalId: string) {
 	const { sql, params } = getJournalQuery(journalId).toSQL();
 
 	const results = useLiveQuery<Journal>(sql, params);
