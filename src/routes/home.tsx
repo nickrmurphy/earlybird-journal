@@ -1,6 +1,7 @@
 import { Button, JournalCard } from "@/components";
 import { Paper } from "@/components/surfaces";
-import { createJournalsResource } from "@/resources/create-journals-resource";
+import { getJournals } from "@/resources";
+import { createAsync } from "@solidjs/router";
 import { For, Show } from "solid-js";
 
 const WelcomeScreen = () => {
@@ -34,33 +35,21 @@ const WelcomeScreen = () => {
 };
 
 export function HomePage() {
-	const journalsData = createJournalsResource();
+	const journals = createAsync(() => getJournals(), {
+		initialValue: [],
+	});
 
 	return (
-		<Show when={!journalsData.isLoading} fallback={<div>Loading...</div>}>
-			<Show
-				when={!journalsData.error}
-				fallback={
-					<div class="p-4 text-red-600">
-						Error loading journals: {journalsData.error?.message}
-					</div>
-				}
-			>
-				<Show
-					when={journalsData.journals.length > 0}
-					fallback={<WelcomeScreen />}
-				>
-					<For each={journalsData.journals}>
-						{(journal) => (
-							<JournalCard
-								journalId={journal.id}
-								title={journal.title}
-								createdAt={journal.createdAt}
-							/>
-						)}
-					</For>
-				</Show>
-			</Show>
+		<Show when={journals().length > 0} fallback={<WelcomeScreen />}>
+			<For each={journals()}>
+				{(journal) => (
+					<JournalCard
+						journalId={journal.id}
+						title={journal.title}
+						createdAt={journal.createdAt}
+					/>
+				)}
+			</For>
 		</Show>
 	);
 }
