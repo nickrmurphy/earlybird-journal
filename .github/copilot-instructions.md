@@ -15,3 +15,12 @@ When creating new components, make sure to follow the naming conventions used in
 
 Avoid adding unnecessary dependencies. If you need to add a new dependency, make sure it is necessary and provides significant value. 
 Instead of adding a new dependency, consider using existing libraries or writing your own code.
+
+Always generate commit messages in this pattern: <type>: <description>
+feat: - new features
+fix: - bug fixes
+update: - improvements/changes
+refactor: - code restructuring
+style: - formatting, CSS changes
+docs: - documentation
+chore: - maintenance tasks
