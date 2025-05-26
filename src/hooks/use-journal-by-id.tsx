@@ -1,23 +1,28 @@
 import { db } from "@/db/db";
-import { journals } from "@/db/schema";
-import { createResource, createMemo } from "solid-js";
+import { type Journal, journals } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { keysToCamelCase } from "@/utils/case";
+import { createMemo, createResource } from "solid-js";
 
 const getJournalQuery = (journalId: string) =>
 	db.select().from(journals).where(eq(journals.id, journalId));
 
 export function useJournalById(journalId: string) {
 	const [result] = createResource(journalId, async (id) => {
-		const rows = await getJournalQuery(id).execute();
-		return rows;
+		try {
+			const rows = await getJournalQuery(id).execute();
+			return rows;
+		} catch (error) {
+			console.error("Failed to fetch journal:", error);
+			throw error;
+		}
 	});
 
 	return createMemo(() => {
 		const rows = result();
 		return {
-			row: rows && rows.length > 0 ? keysToCamelCase(rows[0]) : undefined,
+			journal: rows && rows.length > 0 ? (rows[0] as Journal) : undefined,
 			isLoading: result.state === "pending",
+			error: result.error,
 		};
 	});
 }

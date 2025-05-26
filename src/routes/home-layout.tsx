@@ -1,7 +1,7 @@
 import { Button } from "@/components";
 import { Paper } from "@/components/surfaces";
-import { PlusIcon } from "lucide-solid";
 import { useLocation } from "@solidjs/router";
+import { PlusIcon } from "lucide-solid";
 import type { ParentComponent } from "solid-js";
 
 export const HomePageLayout: ParentComponent = (props) => {

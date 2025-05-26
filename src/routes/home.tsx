@@ -1,5 +1,5 @@
-import { Paper } from "@/components/surfaces";
 import { Button, JournalCard } from "@/components";
+import { Paper } from "@/components/surfaces";
 import { useJournals } from "@/hooks/use-journals";
 import { For, Show } from "solid-js";
 
@@ -39,20 +39,29 @@ export function HomePage() {
 	return (
 		<Show when={!journalsData().isLoading} fallback={<div>Loading...</div>}>
 			<Show
-				when={journalsData().rows.length === 0}
+				when={!journalsData().error}
 				fallback={
-					<For each={journalsData().rows}>
-						{(row: Record<string, unknown>) => (
-							<JournalCard
-								journalId={row.id as string}
-								title={row.title as string}
-								createdAt={row.createdAt as Date}
-							/>
-						)}
-					</For>
+					<div class="p-4 text-red-600">
+						Error loading journals: {journalsData().error?.message}
+					</div>
 				}
 			>
-				<WelcomeScreen />
+				<Show
+					when={journalsData().journals.length === 0}
+					fallback={
+						<For each={journalsData().journals}>
+							{(journal) => (
+								<JournalCard
+									journalId={journal.id}
+									title={journal.title}
+									createdAt={journal.createdAt}
+								/>
+							)}
+						</For>
+					}
+				>
+					<WelcomeScreen />
+				</Show>
 			</Show>
 		</Show>
 	);

@@ -1,6 +1,6 @@
-import { splitProps } from "solid-js";
-import type { JSX, Component } from "solid-js";
 import clsx from "clsx/lite";
+import { splitProps } from "solid-js";
+import type { Component, JSX } from "solid-js";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";

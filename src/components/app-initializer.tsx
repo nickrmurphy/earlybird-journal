@@ -1,15 +1,15 @@
-import { runMigrations } from "@/db/run-migrations";
-import { client, db } from "@/db/db";
+import { client, db, initializeDatabase } from "@/db/db";
 import migrations from "@/db/migrations.json";
-import {
-	createContext,
-	useContext,
-	createSignal,
-	createEffect,
-	Show,
-	type ParentComponent,
-} from "solid-js";
+import { runMigrations } from "@/db/run-migrations";
 import type { PGlite } from "@electric-sql/pglite";
+import {
+	type ParentComponent,
+	Show,
+	createContext,
+	createEffect,
+	createSignal,
+	useContext,
+} from "solid-js";
 
 const PGliteContext = createContext<PGlite>();
 
@@ -31,17 +31,24 @@ const PGliteProvider: ParentComponent<{ db: PGlite }> = (props) => {
 
 export const AppInitializer: ParentComponent = (props) => {
 	const [initialized, setInitialized] = createSignal(false);
+	const [error, setError] = createSignal<Error | null>(null);
 
 	createEffect(() => {
 		let mounted = true;
 		(async () => {
 			try {
+				await initializeDatabase();
 				await runMigrations(db, migrations);
 				if (mounted) {
 					setInitialized(true);
 				}
-			} catch (error) {
+			} catch (err) {
+				const error =
+					err instanceof Error ? err : new Error("Failed to initialize app");
 				console.error("Failed to run migrations:", error);
+				if (mounted) {
+					setError(error);
+				}
 			}
 		})();
 
@@ -51,8 +58,17 @@ export const AppInitializer: ParentComponent = (props) => {
 	});
 
 	return (
-		<Show when={initialized()} fallback={<div>Initializing...</div>}>
-			<PGliteProvider db={client}>{props.children}</PGliteProvider>
+		<Show
+			when={!error()}
+			fallback={
+				<div class="p-4 text-red-600">
+					Failed to initialize app: {error()?.message}
+				</div>
+			}
+		>
+			<Show when={initialized()} fallback={<div>Initializing...</div>}>
+				<PGliteProvider db={client}>{props.children}</PGliteProvider>
+			</Show>
 		</Show>
 	);
 };

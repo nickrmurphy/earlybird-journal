@@ -1,6 +1,6 @@
 import { splitProps } from "solid-js";
+import type { Component, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import type { JSX, Component } from "solid-js";
 
 export interface PaperProps extends JSX.HTMLAttributes<HTMLElement> {
 	as?: keyof JSX.IntrinsicElements;

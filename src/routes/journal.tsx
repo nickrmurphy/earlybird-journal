@@ -2,9 +2,9 @@ import { Button } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { useJournalById } from "@/hooks";
 import { getRelativeTime } from "@/utils/time";
+import { useParams } from "@solidjs/router";
 import { LibraryIcon } from "lucide-solid";
 import { createEffect, createSignal } from "solid-js";
-import { useParams } from "@solidjs/router";
 
 export function JournalPage() {
 	const params = useParams<{ journalId: string }>();
@@ -20,13 +20,23 @@ export function JournalPage() {
 		}
 	});
 
-	const { row, isLoading } = journalData();
+	const { journal, isLoading, error } = journalData();
 
-	return isLoading ? (
-		<></>
-	) : !row ? (
-		<></>
-	) : (
+	if (isLoading) {
+		return <div class="p-4">Loading journal...</div>;
+	}
+
+	if (error) {
+		return (
+			<div class="p-4 text-red-600">Error loading journal: {error.message}</div>
+		);
+	}
+
+	if (!journal) {
+		return <div class="p-4">Journal not found</div>;
+	}
+
+	return (
 		<div
 			ref={setScrollRef}
 			class="overflow-x-auto h-screen no-scrollbar scroll-smooth snap-x snap-mandatory"
@@ -47,8 +57,8 @@ export function JournalPage() {
 				</div>
 				<div class="h-full snap-center">
 					<Paper variant="cream" class="flex flex-col h-full p-6 gap-4">
-						<h2 class="text-xl font-bold font-serif">{row.title as string}</h2>
-						<p>{row.intention as string}</p>
+						<h2 class="text-xl font-bold font-serif">{journal.title}</h2>
+						<p>{journal.intention}</p>
 						<section>
 							<h3 class="text-lg font-semibold">Index</h3>
 							<ul class="list-disc pl-5">
@@ -60,7 +70,7 @@ export function JournalPage() {
 						</section>
 						<section class="mt-auto flex items-center justify-between">
 							<p class="text-ink-black/70">
-								Created {getRelativeTime(row.createdAt as Date)}
+								Created {getRelativeTime(journal.createdAt)}
 							</p>
 							<Button variant="secondary" size="sm">
 								See all journals

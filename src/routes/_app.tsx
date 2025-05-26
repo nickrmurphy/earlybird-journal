@@ -1,8 +1,8 @@
-import { Router, Route } from "@solidjs/router";
 import { AppInitializer } from "@/components/app-initializer";
 import { HomePage } from "@/routes/home";
-import { JournalPage } from "./journal";
+import { Route, Router } from "@solidjs/router";
 import { HomePageLayout } from "./home-layout";
+import { JournalPage } from "./journal";
 import { NewJournalPage } from "./new-journal";
 
 export const App = () => (
