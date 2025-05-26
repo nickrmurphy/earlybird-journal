@@ -1,4 +1,5 @@
 import { splitProps } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import type { JSX, Component } from "solid-js";
 
 export interface PaperProps extends JSX.HTMLAttributes<HTMLElement> {
@@ -15,6 +16,11 @@ export const Paper: Component<PaperProps> = (props) => {
 			? "bg-paper-cream border border-ink-black/10"
 			: "bg-paper-white border border-ink-black/10";
 
-	// @ts-ignore - Dynamic component typing
-	return <Comp class={`${variantClass} rounded-lg shadow ${c}`} {...rest} />;
+	return (
+		<Dynamic
+			component={Comp}
+			class={`${variantClass} rounded-lg shadow ${c}`}
+			{...rest}
+		/>
+	);
 };

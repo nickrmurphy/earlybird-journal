@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { journals } from "@/db/schema";
-import { createResource } from "solid-js";
+import { createResource, createMemo } from "solid-js";
 import { eq } from "drizzle-orm";
 import { keysToCamelCase } from "@/utils/case";
 
@@ -13,11 +13,11 @@ export function useJournalById(journalId: string) {
 		return rows;
 	});
 
-	return () => {
+	return createMemo(() => {
 		const rows = result();
 		return {
 			row: rows && rows.length > 0 ? keysToCamelCase(rows[0]) : undefined,
 			isLoading: result.state === "pending",
 		};
-	};
+	});
 }

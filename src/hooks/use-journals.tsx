@@ -1,6 +1,6 @@
 import { db } from "@/db/db";
 import { journals } from "@/db/schema";
-import { createResource } from "solid-js";
+import { createResource, createMemo } from "solid-js";
 import { keysToCamelCase } from "@/utils/case";
 
 const getJournalsQuery = () =>
@@ -12,7 +12,7 @@ export function useJournals() {
 		return rows;
 	});
 
-	return () => {
+	return createMemo(() => {
 		const rows = results();
 		return {
 			rows: rows
@@ -20,5 +20,5 @@ export function useJournals() {
 				: [],
 			isLoading: results.state === "pending",
 		};
-	};
+	});
 }

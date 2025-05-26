@@ -42,9 +42,19 @@ function NewJournalForm({
 	const [title, setTitle] = createSignal("");
 	const [intention, setIntention] = createSignal("");
 
-	const handleSubmit = (e: Event) => {
+	const handleSubmit = (e: SubmitEvent) => {
 		e.preventDefault();
 		onSubmit({ title: title(), intention: intention() });
+	};
+
+	const handleTitleChange = (e: Event) => {
+		const target = e.target as HTMLInputElement;
+		setTitle(target.value);
+	};
+
+	const handleIntentionChange = (e: Event) => {
+		const target = e.target as HTMLTextAreaElement;
+		setIntention(target.value);
 	};
 
 	return (
@@ -58,7 +68,7 @@ function NewJournalForm({
 				type="text"
 				name="title"
 				value={title()}
-				onChange={(e) => setTitle(e.target.value)}
+				onInput={handleTitleChange}
 				placeholder="Journal title"
 				required
 			/>
@@ -67,7 +77,7 @@ function NewJournalForm({
 				name="intention"
 				rows={6}
 				value={intention()}
-				onChange={(e) => setIntention(e.target.value)}
+				onInput={handleIntentionChange}
 				placeholder="What is your intention for this journal?"
 				required
 			/>

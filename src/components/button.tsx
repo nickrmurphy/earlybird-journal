@@ -1,18 +1,23 @@
 import { splitProps } from "solid-js";
-import type { JSX } from "solid-js";
+import type { JSX, Component } from "solid-js";
 import clsx from "clsx/lite";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";
 
-type ButtonProps<T extends keyof JSX.IntrinsicElements = "button"> = {
-	as?: T;
+interface BaseButtonProps {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	children?: JSX.Element;
 	class?: string;
 	className?: string;
-} & JSX.IntrinsicElements[T];
+}
+
+type ButtonProps = BaseButtonProps &
+	JSX.ButtonHTMLAttributes<HTMLButtonElement>;
+type LinkButtonProps = BaseButtonProps & {
+	as: "a";
+} & JSX.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const variantClasses: Record<ButtonVariant, string> = {
 	primary:
@@ -30,35 +35,39 @@ const sizeClasses: Record<ButtonSize, string> = {
 	lg: "px-6 py-3 text-lg",
 };
 
-export function Button<T extends keyof JSX.IntrinsicElements = "button">(
-	props: ButtonProps<T>,
-) {
+export const Button: Component<ButtonProps | LinkButtonProps> = (props) => {
 	const [local, rest] = splitProps(props, [
-		"as",
 		"variant",
 		"size",
 		"children",
 		"class",
 		"className",
 	]);
-	const Comp = (local.as || "button") as keyof JSX.IntrinsicElements;
-	const c = local.class || local.className || "";
+
 	const buttonClasses = clsx(
 		variantClasses[local.variant || "primary"],
 		sizeClasses[local.size || "md"],
 		"font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] flex items-center justify-center",
-		c,
+		local.class || local.className || "",
 	);
 
-	// Use JSX as any to avoid type error for Comp
+	if ("as" in props && props.as === "a") {
+		return (
+			<a
+				class={buttonClasses}
+				{...(rest as JSX.AnchorHTMLAttributes<HTMLAnchorElement>)}
+			>
+				{local.children}
+			</a>
+		);
+	}
+
 	return (
-		<>
-			{
-				// @ts-expect-error: Comp is a dynamic tag
-				<Comp class={buttonClasses} {...rest}>
-					{local.children}
-				</Comp>
-			}
-		</>
+		<button
+			class={buttonClasses}
+			{...(rest as JSX.ButtonHTMLAttributes<HTMLButtonElement>)}
+		>
+			{local.children}
+		</button>
 	);
-}
+};

@@ -4,10 +4,12 @@ import { useJournalById } from "@/hooks";
 import { getRelativeTime } from "@/utils/time";
 import { LibraryIcon } from "lucide-solid";
 import { createEffect, createSignal } from "solid-js";
+import { useParams } from "@solidjs/router";
 
-export function JournalPage({ journalId }: { journalId: string }) {
+export function JournalPage() {
+	const params = useParams<{ journalId: string }>();
 	const [scrollRef, setScrollRef] = createSignal<HTMLDivElement | undefined>();
-	const journalData = useJournalById(journalId);
+	const journalData = useJournalById(params.journalId);
 
 	createEffect(() => {
 		const ref = scrollRef();
@@ -35,12 +37,12 @@ export function JournalPage({ journalId }: { journalId: string }) {
 						variant="cream"
 						class="flex flex-col items-center justify-center h-full p-6"
 					>
-						Some journal content for journal ID: {journalId}
+						Some journal content for journal ID: {params.journalId}
 					</Paper>
 				</div>
 				<div class="h-full snap-center">
 					<Paper variant="white" class="flex flex-col h-full p-6">
-						Some journal content for journal ID: {journalId}
+						Some journal content for journal ID: {params.journalId}
 					</Paper>
 				</div>
 				<div class="h-full snap-center">

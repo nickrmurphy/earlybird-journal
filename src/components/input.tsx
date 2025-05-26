@@ -11,7 +11,7 @@ export function Input(props: InputProps) {
 		<label class="flex flex-col gap-1">
 			{local.label && <span class="font-medium">{local.label}</span>}
 			<input
-				class="border border-ink-black/50 rounded px-3 py-2 focus:outline-none"
+				class="border border-ink-black/50 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-ink-blue/50"
 				{...rest}
 			/>
 		</label>
@@ -29,7 +29,7 @@ export function Textarea(props: TextareaProps) {
 		<label class="flex flex-col gap-1">
 			{local.label && <span class="font-medium">{local.label}</span>}
 			<textarea
-				class="border border-ink-black/50 rounded px-3 py-2 resize-vertical focus:outline-none"
+				class="border border-ink-black/50 rounded px-3 py-2 resize-vertical focus:outline-none focus:ring-2 focus:ring-ink-blue/50"
 				{...rest}
 			/>
 		</label>

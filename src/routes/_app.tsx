@@ -1,4 +1,4 @@
-import { Router, Route, useParams } from "@solidjs/router";
+import { Router, Route } from "@solidjs/router";
 import { AppInitializer } from "@/components/app-initializer";
 import { HomePage } from "@/routes/home";
 import { JournalPage } from "./journal";
@@ -8,13 +8,7 @@ import { NewJournalPage } from "./new-journal";
 export const App = () => (
 	<AppInitializer>
 		<Router>
-			<Route
-				path="/journal/:journalId"
-				component={() => {
-					const params = useParams<{ journalId: string }>();
-					return <JournalPage journalId={params.journalId} />;
-				}}
-			/>
+			<Route path="/journal/:journalId" component={JournalPage} />
 			<Route path="/" component={HomePageLayout}>
 				<Route path="/new" component={NewJournalPage} />
 				<Route path="/" component={HomePage} />

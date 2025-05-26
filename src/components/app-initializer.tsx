@@ -1,7 +1,14 @@
 import { runMigrations } from "@/db/run-migrations";
 import { client, db } from "@/db/db";
 import migrations from "@/db/migrations.json";
-import { createContext, useContext, type ParentComponent } from "solid-js";
+import {
+	createContext,
+	useContext,
+	createSignal,
+	createEffect,
+	Show,
+	type ParentComponent,
+} from "solid-js";
 import type { PGlite } from "@electric-sql/pglite";
 
 const PGliteContext = createContext<PGlite>();
@@ -23,18 +30,29 @@ const PGliteProvider: ParentComponent<{ db: PGlite }> = (props) => {
 };
 
 export const AppInitializer: ParentComponent = (props) => {
-	let init = false;
-	let didRunMigrations = false;
+	const [initialized, setInitialized] = createSignal(false);
 
-	if (!didRunMigrations) {
-		didRunMigrations = true;
+	createEffect(() => {
+		let mounted = true;
 		(async () => {
-			await runMigrations(db, migrations);
-			init = true;
+			try {
+				await runMigrations(db, migrations);
+				if (mounted) {
+					setInitialized(true);
+				}
+			} catch (error) {
+				console.error("Failed to run migrations:", error);
+			}
 		})();
-	}
 
-	if (!init) return null;
+		return () => {
+			mounted = false;
+		};
+	});
 
-	return <PGliteProvider db={client}>{props.children}</PGliteProvider>;
+	return (
+		<Show when={initialized()} fallback={<div>Initializing...</div>}>
+			<PGliteProvider db={client}>{props.children}</PGliteProvider>
+		</Show>
+	);
 };
