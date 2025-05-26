@@ -1,6 +1,7 @@
 import { useJournalList } from "@/hooks";
 import { Paper } from "@/components/surfaces";
 import { Button, JournalCard } from "@/components";
+import { useJournals } from "@/hooks/use-journals";
 
 const WelcomeScreen = () => (
 	<Paper
@@ -29,6 +30,8 @@ const WelcomeScreen = () => (
 );
 
 export const HomePage = () => {
+	const data = useJournals();
+	console.log("Journals data:", data);
 	const { ids } = useJournalList();
 	return ids.length === 0 ? (
 		<WelcomeScreen />
