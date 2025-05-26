@@ -3,18 +3,19 @@
 import { db } from "@/db/db";
 import { journals } from "@/db/schema";
 import { useLiveQuery } from "@electric-sql/pglite-react";
+import { keysToCamelCase } from "@/utils/case";
 
 const getJournalsQuery = () =>
 	db.select().from(journals).orderBy(journals.createdAt);
 
-type x = ReturnType<typeof getJournalsQuery>;
-type y = Awaited<ReturnType<x["execute"]>>;
-type z = y[0];
+type JournalsQuery = ReturnType<typeof getJournalsQuery>;
+type JournalsQueryResult = Awaited<ReturnType<JournalsQuery["execute"]>>;
+type Journal = JournalsQueryResult[0];
 
 export function useJournals() {
 	const { sql, params } = getJournalsQuery().toSQL();
 
-	const results = useLiveQuery<z>(sql, params);
+	const results = useLiveQuery<Journal>(sql, params);
 
 	if (!results) {
 		return {
@@ -25,6 +26,7 @@ export function useJournals() {
 
 	return {
 		...results,
+		rows: results.rows.map((row) => keysToCamelCase(row) as Journal),
 		isLoading: false,
 	};
 }

@@ -101,3 +101,6 @@ export const eventsRelations = relations(events, ({ one }) => ({
         references: [journals.id],
     }),
 }));
+
+
+export type NewJournal = typeof journals.$inferInsert;

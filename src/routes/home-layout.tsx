@@ -13,8 +13,14 @@ export const HomePageLayout: FC<PropsWithChildren> = ({ children }) => {
 				<aside>
 					<Button asChild variant={isNewRoute ? "secondary" : "primary"}>
 						<Link href={isNewRoute ? "/" : "/new"}>
-							{isNewRoute ? "Cancel" : "Create a journal"}
-							<PlusIcon />
+							{isNewRoute ? (
+								"Cancel"
+							) : (
+								<>
+									Create a journal
+									<PlusIcon />
+								</>
+							)}
 						</Link>
 					</Button>
 				</aside>

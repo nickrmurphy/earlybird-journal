@@ -13,7 +13,6 @@ export const App = () => (
 				<Route
 					path="/journal/:journalId"
 					component={() => {
-						console.log("Journal page");
 						const { journalId } = useParams<{ journalId: string }>();
 						return <JournalPage journalId={journalId} />;
 					}}

@@ -3,21 +3,29 @@ import { Paper } from "@/components/surfaces";
 import { Input, Textarea } from "@/components/input";
 import { ArrowRightIcon } from "lucide-react";
 import { useState } from "react";
-import { useCreateJournal } from "@/hooks";
 import { useLocation } from "wouter";
+import { useCreateJournal } from "@/hooks/use-create-journal";
 
 export const NewJournalPage = () => {
 	const [, navigate] = useLocation();
-	const { create } = useCreateJournal({
-		onSuccess: (rowId) => {
-			navigate(`/journal/${rowId}`);
-		},
-	});
+	const { create } = useCreateJournal();
+
+	const handleSubmit = async ({
+		title,
+		intention,
+	}: {
+		title: string;
+		intention: string;
+	}) => {
+		// TODO: Replace "clientId" with actual client ID or context
+		const [{ id }] = await create({ title, intention, updatedBy: "clientId" });
+		navigate(`/journal/${id}`);
+	};
 
 	return (
 		<Paper asChild variant="white">
 			<main className="col-span-2 p-4">
-				<NewJournalForm onSubmit={create} />
+				<NewJournalForm onSubmit={handleSubmit} />
 			</main>
 		</Paper>
 	);

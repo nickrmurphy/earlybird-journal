@@ -1,27 +1,9 @@
-import { useAddRowCallback } from "@/stores/journal";
-import type { IJournal } from "@/stores/journal";
+import { db } from "@/db/db";
+import { journals, type NewJournal } from "@/db/schema";
 
-type UseCreateJournalArgs = {
-	onSuccess?: (rowId: string) => void;
-};
-
-export const useCreateJournal = ({
-	onSuccess,
-}: UseCreateJournalArgs | undefined = {}) => {
-	const create = useAddRowCallback(
-		"journals",
-		(journal: Omit<IJournal, "createdAt">) => ({
-			...journal,
-			createdAt: new Date().toISOString(),
-		}),
-		[],
-		undefined,
-		(rowId) => {
-			if (rowId) {
-				onSuccess?.(rowId);
-			}
-		},
-	);
+export const useCreateJournal = () => {
+	const create = (data: NewJournal) =>
+		db.insert(journals).values(data).returning().execute();
 
 	return {
 		create,
