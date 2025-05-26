@@ -1,4 +1,3 @@
-import { useJournalList } from "@/hooks";
 import { Paper } from "@/components/surfaces";
 import { Button, JournalCard } from "@/components";
 import { useJournals } from "@/hooks/use-journals";
@@ -30,12 +29,12 @@ const WelcomeScreen = () => (
 );
 
 export const HomePage = () => {
-	const data = useJournals();
-	console.log("Journals data:", data);
-	const { ids } = useJournalList();
-	return ids.length === 0 ? (
+	const { rows, isLoading } = useJournals();
+	return isLoading ? (
+		<div>Loading...</div>
+	) : rows.length === 0 ? (
 		<WelcomeScreen />
 	) : (
-		ids.map((id) => <JournalCard key={id} journalId={id} />)
+		rows.map((row) => <JournalCard key={row.id} journalId={row.id} />)
 	);
 };
