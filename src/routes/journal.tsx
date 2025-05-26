@@ -1,15 +1,15 @@
 import { Button } from "@/components";
 import { Paper } from "@/components/surfaces";
-import { useJournalById } from "@/hooks";
+import { createJournalByIdResource } from "@/resources";
 import { getRelativeTime } from "@/utils/time";
 import { useParams } from "@solidjs/router";
 import { LibraryIcon } from "lucide-solid";
-import { createEffect, createSignal, Show } from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 
 export function JournalPage() {
 	const params = useParams<{ journalId: string }>();
 	const [scrollRef, setScrollRef] = createSignal<HTMLDivElement | undefined>();
-	const journalData = useJournalById(params.journalId);
+	const journalData = createJournalByIdResource(params.journalId);
 
 	createEffect(() => {
 		const ref = scrollRef();

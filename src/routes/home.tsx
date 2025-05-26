@@ -1,6 +1,6 @@
 import { Button, JournalCard } from "@/components";
 import { Paper } from "@/components/surfaces";
-import { useJournals } from "@/hooks/use-journals";
+import { createJournalsResource } from "@/resources/create-journals-resource";
 import { For, Show } from "solid-js";
 
 const WelcomeScreen = () => {
@@ -34,7 +34,7 @@ const WelcomeScreen = () => {
 };
 
 export function HomePage() {
-	const journalsData = useJournals();
+	const journalsData = createJournalsResource();
 
 	return (
 		<Show when={!journalsData.isLoading} fallback={<div>Loading...</div>}>

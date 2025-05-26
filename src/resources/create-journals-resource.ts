@@ -2,8 +2,12 @@ import { db } from "@/db/db";
 import { type Journal, journals } from "@/db/schema";
 import { createResource } from "solid-js";
 
-export function useJournals() {
-	const [results] = createResource(async () => {
+/**
+ * Creates a reactive resource for fetching all journals
+ * @returns Resource with journals data, loading state, and error handling
+ */
+export function createJournalsResource() {
+	const [results, { refetch }] = createResource(async () => {
 		try {
 			const rows = await db
 				.select()
@@ -27,5 +31,6 @@ export function useJournals() {
 		get error() {
 			return results.error;
 		},
+		refetch,
 	};
 }

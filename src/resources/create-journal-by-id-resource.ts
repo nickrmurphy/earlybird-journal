@@ -3,8 +3,13 @@ import { type Journal, journals } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { createResource } from "solid-js";
 
-export function useJournalById(journalId: string) {
-	const [result] = createResource(journalId, async (id) => {
+/**
+ * Creates a reactive resource for fetching a journal by ID
+ * @param journalId - The ID of the journal to fetch
+ * @returns Resource with journal data, loading state, and error handling
+ */
+export function createJournalByIdResource(journalId: string) {
+	const [result, { refetch }] = createResource(journalId, async (id) => {
 		try {
 			const rows = await db
 				.select()
@@ -28,5 +33,6 @@ export function useJournalById(journalId: string) {
 		get error() {
 			return result.error;
 		},
+		refetch,
 	};
 }

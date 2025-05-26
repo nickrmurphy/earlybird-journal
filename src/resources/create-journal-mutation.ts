@@ -2,7 +2,11 @@ import { db } from "@/db/db";
 import { type NewJournal, journals } from "@/db/schema";
 import { createSignal } from "solid-js";
 
-export const useCreateJournal = () => {
+/**
+ * Creates a mutation helper for creating new journals
+ * @returns Mutation functions and state for creating journals
+ */
+export function createJournalMutation() {
 	const [isCreating, setIsCreating] = createSignal(false);
 	const [error, setError] = createSignal<Error | null>(null);
 
@@ -27,9 +31,19 @@ export const useCreateJournal = () => {
 		}
 	};
 
+	const reset = () => {
+		setError(null);
+		setIsCreating(false);
+	};
+
 	return {
 		create,
-		isCreating,
-		error,
+		reset,
+		get isCreating() {
+			return isCreating();
+		},
+		get error() {
+			return error();
+		},
 	};
-};
+}

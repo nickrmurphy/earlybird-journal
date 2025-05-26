@@ -1,13 +1,13 @@
 import { Button, Input, Textarea } from "@/components";
 import { Paper } from "@/components/surfaces";
-import { useCreateJournal } from "@/hooks/use-create-journal";
+import { createJournalMutation } from "@/resources";
 import { useNavigate } from "@solidjs/router";
 import { ArrowRightIcon } from "lucide-solid";
 import { createSignal } from "solid-js";
 
 export const NewJournalPage = () => {
 	const navigate = useNavigate();
-	const { create, isCreating, error } = useCreateJournal();
+	const { create, isCreating, error } = createJournalMutation();
 	const [title, setTitle] = createSignal("");
 	const [intention, setIntention] = createSignal("");
 
@@ -35,9 +35,9 @@ export const NewJournalPage = () => {
 					autocomplete="off"
 					onSubmit={handleSubmit}
 				>
-					{error() && (
+					{error && (
 						<div class="p-3 bg-red-50 border border-red-200 rounded-md text-red-700">
-							{error()?.message}
+							{error.message}
 						</div>
 					)}
 					<Input
@@ -48,7 +48,7 @@ export const NewJournalPage = () => {
 						onInput={(e) => setTitle(e.currentTarget.value)}
 						placeholder="Journal title"
 						required
-						disabled={isCreating()}
+						disabled={isCreating}
 					/>
 					<Textarea
 						label="Intention"
@@ -58,11 +58,11 @@ export const NewJournalPage = () => {
 						onInput={(e) => setIntention(e.currentTarget.value)}
 						placeholder="What is your intention for this journal?"
 						required
-						disabled={isCreating()}
+						disabled={isCreating}
 					/>
 					<div>
-						<Button type="submit" disabled={isCreating()}>
-							{isCreating() ? "Creating..." : "Continue"} <ArrowRightIcon />
+						<Button type="submit" disabled={isCreating}>
+							{isCreating ? "Creating..." : "Continue"} <ArrowRightIcon />
 						</Button>
 					</div>
 				</form>
