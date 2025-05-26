@@ -10,6 +10,7 @@ import { db } from "@/db/db";
 import { journals } from "@/db/schema";
 import { useLiveQuery } from "@electric-sql/pglite-react";
 import { eq } from "drizzle-orm";
+import { keysToCamelCase } from "@/utils/case";
 
 const getJournalQuery = (journalId: string) =>
 	db.select().from(journals).where(eq(journals.id, journalId));
@@ -25,13 +26,14 @@ export function useJournalByIdDb(journalId: string) {
 
 	if (!results) {
 		return {
-			rows: [],
+			row: undefined,
 			isLoading: true,
 		};
 	}
 
 	return {
 		...results,
+		row: keysToCamelCase(results.rows[0]) as Journal,
 		isLoading: false,
 	};
 }
