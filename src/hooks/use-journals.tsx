@@ -1,32 +1,24 @@
-// export const getUsersQuery = () => db.select().from(users);
-
 import { db } from "@/db/db";
 import { journals } from "@/db/schema";
-import { useLiveQuery } from "@electric-sql/pglite-react";
+import { createResource } from "solid-js";
 import { keysToCamelCase } from "@/utils/case";
 
 const getJournalsQuery = () =>
 	db.select().from(journals).orderBy(journals.createdAt);
 
-type JournalsQuery = ReturnType<typeof getJournalsQuery>;
-type JournalsQueryResult = Awaited<ReturnType<JournalsQuery["execute"]>>;
-type Journal = JournalsQueryResult[0];
-
 export function useJournals() {
-	const { sql, params } = getJournalsQuery().toSQL();
+	const [results] = createResource(async () => {
+		const rows = await getJournalsQuery().execute();
+		return rows;
+	});
 
-	const results = useLiveQuery<Journal>(sql, params);
-
-	if (!results) {
+	return () => {
+		const rows = results();
 		return {
-			rows: [],
-			isLoading: true,
+			rows: rows
+				? rows.map((row: Record<string, unknown>) => keysToCamelCase(row))
+				: [],
+			isLoading: results.state === "pending",
 		};
-	}
-
-	return {
-		...results,
-		rows: results.rows.map((row) => keysToCamelCase(row) as Journal),
-		isLoading: false,
 	};
 }

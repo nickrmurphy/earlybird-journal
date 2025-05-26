@@ -1,13 +1,13 @@
 import { Button } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { Input, Textarea } from "@/components/input";
-import { ArrowRightIcon } from "lucide-react";
-import { useState } from "react";
-import { useLocation } from "wouter";
+import { ArrowRightIcon } from "lucide-solid";
+import { createSignal } from "solid-js";
+import { useNavigate } from "@solidjs/router";
 import { useCreateJournal } from "@/hooks/use-create-journal";
 
 export const NewJournalPage = () => {
-	const [, navigate] = useLocation();
+	const navigate = useNavigate();
 	const { create } = useCreateJournal();
 
 	const handleSubmit = async ({
@@ -23,8 +23,8 @@ export const NewJournalPage = () => {
 	};
 
 	return (
-		<Paper asChild variant="white">
-			<main className="col-span-2 p-4">
+		<Paper variant="white">
+			<main class="col-span-2 p-4">
 				<NewJournalForm onSubmit={handleSubmit} />
 			</main>
 		</Paper>
@@ -39,25 +39,25 @@ function NewJournalForm({
 		intention,
 	}: { title: string; intention: string }) => void;
 }) {
-	const [title, setTitle] = useState("");
-	const [intention, setIntention] = useState("");
+	const [title, setTitle] = createSignal("");
+	const [intention, setIntention] = createSignal("");
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: Event) => {
 		e.preventDefault();
-		onSubmit({ title, intention });
+		onSubmit({ title: title(), intention: intention() });
 	};
 
 	return (
 		<form
-			className="flex flex-col gap-4 mt-6"
-			autoComplete="off"
+			class="flex flex-col gap-4 mt-6"
+			autocomplete="off"
 			onSubmit={handleSubmit}
 		>
 			<Input
 				label="Title"
 				type="text"
 				name="title"
-				value={title}
+				value={title()}
 				onChange={(e) => setTitle(e.target.value)}
 				placeholder="Journal title"
 				required
@@ -66,7 +66,7 @@ function NewJournalForm({
 				label="Intention"
 				name="intention"
 				rows={6}
-				value={intention}
+				value={intention()}
 				onChange={(e) => setIntention(e.target.value)}
 				placeholder="What is your intention for this journal?"
 				required

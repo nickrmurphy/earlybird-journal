@@ -1,6 +1,5 @@
-import { Route, Switch, useParams } from "wouter";
+import { Router, Route, useParams } from "@solidjs/router";
 import { AppInitializer } from "@/components/app-initializer";
-import { JournalStoreContext } from "@/contexts";
 import { HomePage } from "@/routes/home";
 import { JournalPage } from "./journal";
 import { HomePageLayout } from "./home-layout";
@@ -8,27 +7,18 @@ import { NewJournalPage } from "./new-journal";
 
 export const App = () => (
 	<AppInitializer>
-		<JournalStoreContext>
-			<Switch>
-				<Route
-					path="/journal/:journalId"
-					component={() => {
-						const { journalId } = useParams<{ journalId: string }>();
-						return <JournalPage journalId={journalId} />;
-					}}
-				/>
-				<Route>
-					<HomePageLayout>
-						<Switch>
-							<Route path="/new" component={NewJournalPage} />
-							<Route path="/" component={HomePage} />
-							<Route>
-								<div className="text-white">404: No such page!</div>
-							</Route>
-						</Switch>
-					</HomePageLayout>
-				</Route>
-			</Switch>
-		</JournalStoreContext>
+		<Router>
+			<Route
+				path="/journal/:journalId"
+				component={() => {
+					const params = useParams<{ journalId: string }>();
+					return <JournalPage journalId={params.journalId} />;
+				}}
+			/>
+			<Route path="/" component={HomePageLayout}>
+				<Route path="/new" component={NewJournalPage} />
+				<Route path="/" component={HomePage} />
+			</Route>
+		</Router>
 	</AppInitializer>
 );

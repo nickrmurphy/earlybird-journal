@@ -1,17 +1,18 @@
-import type { FC, ComponentPropsWithoutRef, ElementType } from "react";
-import { Children, cloneElement, isValidElement } from "react";
+import { splitProps } from "solid-js";
+import type { JSX } from "solid-js";
 import clsx from "clsx/lite";
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";
 
-type ButtonProps<T extends ElementType = "button"> = {
+type ButtonProps<T extends keyof JSX.IntrinsicElements = "button"> = {
 	as?: T;
-	asChild?: boolean;
 	variant?: ButtonVariant;
 	size?: ButtonSize;
-	children?: React.ReactNode;
-} & ComponentPropsWithoutRef<T>;
+	children?: JSX.Element;
+	class?: string;
+	className?: string;
+} & JSX.IntrinsicElements[T];
 
 const variantClasses: Record<ButtonVariant, string> = {
 	primary:
@@ -29,39 +30,35 @@ const sizeClasses: Record<ButtonSize, string> = {
 	lg: "px-6 py-3 text-lg",
 };
 
-export const Button: FC<ButtonProps> = ({
-	as: Component = "button",
-	asChild = false,
-	variant = "primary",
-	size = "md",
-	children,
-	className = "",
-	...props
-}) => {
+export function Button<T extends keyof JSX.IntrinsicElements = "button">(
+	props: ButtonProps<T>,
+) {
+	const [local, rest] = splitProps(props, [
+		"as",
+		"variant",
+		"size",
+		"children",
+		"class",
+		"className",
+	]);
+	const Comp = (local.as || "button") as keyof JSX.IntrinsicElements;
+	const c = local.class || local.className || "";
 	const buttonClasses = clsx(
-		variantClasses[variant],
-		sizeClasses[size],
+		variantClasses[local.variant || "primary"],
+		sizeClasses[local.size || "md"],
 		"font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] flex items-center justify-center",
-		className,
+		c,
 	);
 
-	if (asChild && children) {
-		const child = Children.only(children);
-		if (isValidElement(child)) {
-			return cloneElement(child, {
-				...props,
-				...child.props,
-				className: clsx(
-					buttonClasses,
-					(child.props as { className?: string }).className,
-				),
-			});
-		}
-	}
-
+	// Use JSX as any to avoid type error for Comp
 	return (
-		<Component className={buttonClasses} {...props}>
-			{children}
-		</Component>
+		<>
+			{
+				// @ts-expect-error: Comp is a dynamic tag
+				<Comp class={buttonClasses} {...rest}>
+					{local.children}
+				</Comp>
+			}
+		</>
 	);
-};
+}

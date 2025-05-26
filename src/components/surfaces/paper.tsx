@@ -1,53 +1,20 @@
-import type { FC, ComponentPropsWithoutRef, ElementType } from "react";
-import { clsx } from "clsx/lite";
-import { Children, cloneElement, isValidElement } from "react";
+import { splitProps } from "solid-js";
+import type { JSX, Component } from "solid-js";
 
-type PaperVariant = "white" | "cream" | "aged";
+export interface PaperProps extends JSX.HTMLAttributes<HTMLElement> {
+	as?: keyof JSX.IntrinsicElements;
+	variant?: "cream" | "white";
+}
 
-type PaperProps<T extends ElementType = "div"> = {
-	as?: T;
-	asChild?: boolean;
-	variant?: PaperVariant;
-	children?: React.ReactNode;
-} & ComponentPropsWithoutRef<T>;
+export const Paper: Component<PaperProps> = (props) => {
+	const [local, rest] = splitProps(props, ["as", "variant", "class"]);
+	const Comp = local.as || "div";
+	const c = local.class || "";
+	const variantClass =
+		local.variant === "cream"
+			? "bg-paper-cream border border-ink-black/10"
+			: "bg-paper-white border border-ink-black/10";
 
-const variantClasses: Record<PaperVariant, string> = {
-	white: "bg-paper-white/95",
-	cream: "bg-paper-cream/95",
-	aged: "bg-paper-aged/95",
-};
-
-export const Paper: FC<PaperProps> = ({
-	as: Component = "div",
-	asChild = false,
-	variant = "white",
-	children,
-	className = "",
-	...props
-}) => {
-	const paperClasses = clsx(
-		variantClasses[variant],
-		"shadow-md rounded-lg",
-		className,
-	);
-
-	if (asChild && children) {
-		const child = Children.only(children);
-		if (isValidElement(child)) {
-			return cloneElement(child, {
-				...props,
-				...child.props,
-				className: clsx(
-					paperClasses,
-					(child.props as { className?: string }).className,
-				),
-			});
-		}
-	}
-
-	return (
-		<Component className={paperClasses} {...props}>
-			{children}
-		</Component>
-	);
+	// @ts-ignore - Dynamic component typing
+	return <Comp class={`${variantClass} rounded-lg shadow ${c}`} {...rest} />;
 };
