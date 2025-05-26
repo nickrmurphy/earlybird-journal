@@ -18,7 +18,7 @@ const storeSchema = {
 			default: new Date().toISOString(),
 		}
 	},
-	day: {
+	days: {
 		journalId: {
 			type: "string",
 			default: "",
@@ -158,7 +158,7 @@ interface IEvent {
 }
 
 // Cast the whole module to be schema-based with WithSchemas:
-const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, Provider, useTable, useAddRowCallback, useRowIds, useRow } = UiReact as UiReact.WithSchemas<
+const { useCreatePersister: useCreatePersisterBase, useCreateStore: useCreateStoreBase, useCreateRelationships: useCreateRelationshipsBase, Provider, useTable, useAddRowCallback, useRowIds, useRow } = UiReact as UiReact.WithSchemas<
 	[typeof storeSchema, NoValuesSchema]
 >;
 
@@ -176,3 +176,4 @@ export const useCreatePersister = (store: Store<[typeof storeSchema, NoValuesSch
 			await persister.startAutoSave();
 		},
 	)
+
