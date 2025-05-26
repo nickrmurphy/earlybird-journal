@@ -1,3 +1,4 @@
+import { A } from "@solidjs/router";
 import clsx from "clsx/lite";
 import { splitProps } from "solid-js";
 import type { Component, JSX } from "solid-js";
@@ -5,19 +6,21 @@ import type { Component, JSX } from "solid-js";
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";
 
-interface ButtonProps {
+interface BaseButtonProps {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	children?: JSX.Element;
 	class?: string;
-	as?: "a";
-	href?: string;
 }
 
-type NativeButtonProps = ButtonProps &
-	JSX.ButtonHTMLAttributes<HTMLButtonElement>;
-type NativeLinkProps = ButtonProps &
-	JSX.AnchorHTMLAttributes<HTMLAnchorElement>;
+type ButtonProps =
+	| (BaseButtonProps &
+			JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
+				as?: undefined;
+				href?: never;
+			})
+	| (BaseButtonProps &
+			JSX.AnchorHTMLAttributes<HTMLAnchorElement> & { as: "a"; href: string });
 
 const variantClasses: Record<ButtonVariant, string> = {
 	primary:
@@ -35,9 +38,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 	lg: "px-6 py-3 text-lg",
 };
 
-export const Button: Component<NativeButtonProps | NativeLinkProps> = (
-	props,
-) => {
+export const Button: Component<ButtonProps> = (props) => {
 	const [local, rest] = splitProps(props, [
 		"variant",
 		"size",
@@ -55,14 +56,11 @@ export const Button: Component<NativeButtonProps | NativeLinkProps> = (
 	);
 
 	if (local.as === "a") {
+		const anchorProps = rest as JSX.AnchorHTMLAttributes<HTMLAnchorElement>;
 		return (
-			<a
-				class={buttonClasses}
-				href={local.href}
-				{...(rest as JSX.AnchorHTMLAttributes<HTMLAnchorElement>)}
-			>
+			<A class={buttonClasses} href={local.href as string} {...anchorProps}>
 				{local.children}
-			</a>
+			</A>
 		);
 	}
 
