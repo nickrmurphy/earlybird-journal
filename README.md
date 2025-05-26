@@ -1,7 +1,16 @@
-# Tauri + React + Typescript
+# Bujo - Bullet Journal App
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+A web-based bullet journal application built with SolidJS, TypeScript, and Vite.
+
+## Tech Stack
+
+- **Frontend:** SolidJS + TypeScript
+- **Styling:** TailwindCSS
+- **Database:** PGlite (PostgreSQL in WASM)
+- **ORM:** Drizzle
+- **Build Tool:** Vite
+- **Package Manager:** Bun
 
 ## Recommended IDE Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- [VS Code](https://code.visualstudio.com/) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
