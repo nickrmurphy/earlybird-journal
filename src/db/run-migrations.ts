@@ -1,8 +1,8 @@
 import type { MigrationConfig } from "drizzle-orm/migrator";
-import type { PgliteDatabase } from "drizzle-orm/pglite";
+import type { BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
 
 export const runMigrations = async (
-	db: PgliteDatabase<Record<string, unknown>>,
+	db: BaseSQLiteDatabase<'async', unknown>,
 	migrations: object,
 ) => {
 	// dialect and session will appear to not exist...but they do

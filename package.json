@@ -11,13 +11,13 @@
 		"lint:fix": "biome check src --write --unsafe"
 	},
 	"dependencies": {
-		"@electric-sql/pglite": "^0.3.2",
 		"@solidjs/router": "^0.15.3",
 		"clsx": "^2.1.1",
 		"drizzle": "^1.4.0",
 		"drizzle-orm": "^0.43.1",
 		"lucide-solid": "^0.511.0",
-		"solid-js": "^1.9.7"
+		"solid-js": "^1.9.7",
+		"sqlocal": "^0.14.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",

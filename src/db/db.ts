@@ -1,19 +1,16 @@
-import { PGlite } from "@electric-sql/pglite";
-import { live } from "@electric-sql/pglite/live";
-import { drizzle } from "drizzle-orm/pglite";
+import { SQLocalDrizzle } from "sqlocal/drizzle";
+import { drizzle } from "drizzle-orm/sqlite-proxy";
 
-let client: PGlite;
+let sqlocalDrizzle: SQLocalDrizzle;
 let db: ReturnType<typeof drizzle>;
 
 export const initializeDatabase = async () => {
-	if (!client) {
-		client = await PGlite.create({
-			extensions: { live },
-			dataDir: "idb://journals",
-		});
-		db = drizzle({ client, casing: "snake_case" });
+	if (!sqlocalDrizzle) {
+		sqlocalDrizzle = new SQLocalDrizzle("journals.sqlite3");
+		const { driver, batchDriver } = sqlocalDrizzle;
+		db = drizzle(driver, batchDriver);
 	}
-	return { client, db };
+	return { client: sqlocalDrizzle, db };
 };
 
-export { client, db };
+export { sqlocalDrizzle as client, db };

@@ -1,94 +1,85 @@
 import { sql } from "drizzle-orm";
 import { relations } from "drizzle-orm";
-import * as t from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer, unique } from "drizzle-orm/sqlite-core";
 
-export const journals = t.pgTable("journals", {
-	id: t.uuid().primaryKey().defaultRandom(),
-	title: t.text().notNull().default("Unnamed Journal"),
-	intention: t.text().notNull().default("-"),
-	createdAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	updatedAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	updatedBy: t.text().notNull(),
+export const journals = sqliteTable("journals", {
+	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+	title: text("title").notNull().default("Unnamed Journal"),
+	intention: text("intention").notNull().default("-"),
+	createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	updatedBy: text("updated_by").notNull(),
 });
 
-export const days = t.pgTable(
+export const days = sqliteTable(
 	"days",
 	{
-		id: t.uuid().primaryKey().defaultRandom(),
-		journalId: t
-			.uuid()
+		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+		journalId: text("journal_id")
 			.notNull()
 			.references(() => journals.id),
-		title: t
-			.text()
+		title: text("title")
 			.notNull()
-			.default(sql`to_char(now(), 'FMDay, YYYY Month DD')`),
-		date: t.date().notNull().defaultNow(),
-		updatedAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-		updatedBy: t.text().notNull(),
+			.default(sql`(strftime('%w', 'now', 'localtime') || ', ' || strftime('%Y %m %d', 'now', 'localtime'))`),
+		date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
+		updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+		updatedBy: text("updated_by").notNull(),
 	},
-	(table) => [t.unique().on(table.journalId, table.date).nullsNotDistinct()],
+	(table) => ({
+		uniqueJournalDate: unique().on(table.journalId, table.date),
+	}),
 );
 
-export const notes = t.pgTable("notes", {
-	id: t.uuid().primaryKey().defaultRandom(),
-	journalId: t
-		.uuid()
+export const notes = sqliteTable("notes", {
+	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+	journalId: text("journal_id")
 		.notNull()
 		.references(() => journals.id),
-	content: t.text().notNull(),
-	createdAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	date: t.date().notNull().defaultNow(),
-	updatedAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	updatedBy: t.text().notNull(),
+	content: text("content").notNull(),
+	createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
+	updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	updatedBy: text("updated_by").notNull(),
 });
 
-export const actionStatusEnum = t.pgEnum("action_status", [
-	"incomplete",
-	"complete",
-	"canceled",
-]);
-
-export const actions = t.pgTable("actions", {
-	id: t.uuid().primaryKey().defaultRandom(),
-	journalId: t
-		.uuid()
+// SQLite doesn't support enums natively, so we'll use text with a check constraint
+export const actions = sqliteTable("actions", {
+	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+	journalId: text("journal_id")
 		.notNull()
 		.references(() => journals.id),
-	content: t.text().notNull(),
-	createdAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	originalDate: t.date().notNull().defaultNow(),
-	date: t.date().notNull().defaultNow(),
-	status: actionStatusEnum().notNull().default("incomplete"),
-	updatedAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	updatedBy: t.text().notNull(),
+	content: text("content").notNull(),
+	createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	originalDate: text("original_date").notNull().default(sql`(date('now', 'localtime'))`),
+	date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
+	status: text("status", { enum: ["incomplete", "complete", "canceled"] }).notNull().default("incomplete"),
+	updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	updatedBy: text("updated_by").notNull(),
 });
 
-export const moods = t.pgTable("moods", {
-	id: t.uuid().primaryKey().defaultRandom(),
-	journalId: t
-		.uuid()
+export const moods = sqliteTable("moods", {
+	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+	journalId: text("journal_id")
 		.notNull()
 		.references(() => journals.id),
-	content: t.text().notNull(),
-	createdAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	date: t.date().notNull().defaultNow(),
-	level: t.integer(),
-	updatedAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	updatedBy: t.text().notNull(),
+	content: text("content").notNull(),
+	createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
+	level: integer("level"),
+	updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	updatedBy: text("updated_by").notNull(),
 });
 
-export const events = t.pgTable("events", {
-	id: t.uuid().primaryKey().defaultRandom(),
-	journalId: t
-		.uuid()
+export const events = sqliteTable("events", {
+	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+	journalId: text("journal_id")
 		.notNull()
 		.references(() => journals.id),
-	content: t.text().notNull(),
-	createdAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	date: t.date().notNull().defaultNow(),
-	updatedAt: t.timestamp({ withTimezone: false }).notNull().defaultNow(),
-	updatedBy: t.text().notNull(),
+	content: text("content").notNull(),
+	createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
+	updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+	updatedBy: text("updated_by").notNull(),
 });
 
 export const daysRelations = relations(days, ({ one }) => ({
