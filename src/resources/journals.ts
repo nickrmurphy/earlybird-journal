@@ -26,4 +26,3 @@ export const createJournal = async (data: NewJournal) => {
     revalidate(getJournal.keyFor(result.id));
     return result;
 }
-

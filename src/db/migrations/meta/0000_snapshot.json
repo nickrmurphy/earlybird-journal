@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8b284fd0-a6f6-4086-90d5-cc38f4c9030f",
+  "id": "bb2bb8ae-e2bc-478a-8ce3-b1d5c7f7fb88",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "actions": {
@@ -28,21 +28,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "original_date": {
-          "name": "original_date",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(date('now', 'localtime'))"
-        },
         "date": {
           "name": "date",
           "type": "text",
@@ -51,13 +36,12 @@
           "autoincrement": false,
           "default": "(date('now', 'localtime'))"
         },
-        "status": {
-          "name": "status",
-          "type": "text",
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'incomplete'"
+          "autoincrement": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -72,6 +56,22 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "original_date": {
+          "name": "original_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(date('now', 'localtime'))"
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'incomplete'"
         }
       },
       "indexes": {},
@@ -127,6 +127,13 @@
           "autoincrement": false,
           "default": "(date('now', 'localtime'))"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "integer",
@@ -145,6 +152,14 @@
       "indexes": {
         "days_journal_id_date_unique": {
           "name": "days_journal_id_date_unique",
+          "columns": [
+            "journal_id",
+            "date"
+          ],
+          "isUnique": true
+        },
+        "unique_journal_date": {
+          "name": "unique_journal_date",
           "columns": [
             "journal_id",
             "date"
@@ -195,13 +210,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "date": {
           "name": "date",
           "type": "text",
@@ -209,6 +217,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": "(date('now', 'localtime'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -323,13 +338,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "date": {
           "name": "date",
           "type": "text",
@@ -338,11 +346,11 @@
           "autoincrement": false,
           "default": "(date('now', 'localtime'))"
         },
-        "level": {
-          "name": "level",
+        "created_at": {
+          "name": "created_at",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "updated_at": {
@@ -357,6 +365,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "level": {
+          "name": "level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -404,13 +419,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "date": {
           "name": "date",
           "type": "text",
@@ -418,6 +426,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": "(date('now', 'localtime'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "updated_at": {
           "name": "updated_at",
