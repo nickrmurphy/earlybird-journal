@@ -4,7 +4,7 @@ import { useJournalById } from "@/hooks";
 import { getRelativeTime } from "@/utils/time";
 import { useParams } from "@solidjs/router";
 import { LibraryIcon } from "lucide-solid";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, Switch, Match } from "solid-js";
 
 export function JournalPage() {
 	const params = useParams<{ journalId: string }>();
@@ -20,66 +20,67 @@ export function JournalPage() {
 		}
 	});
 
-	const { journal, isLoading, error } = journalData();
-
-	if (isLoading) {
-		return <div class="p-4">Loading journal...</div>;
-	}
-
-	if (error) {
-		return (
-			<div class="p-4 text-red-600">Error loading journal: {error.message}</div>
-		);
-	}
-
-	if (!journal) {
-		return <div class="p-4">Journal not found</div>;
-	}
-
 	return (
-		<div
-			ref={setScrollRef}
-			class="overflow-x-auto h-screen no-scrollbar scroll-smooth snap-x snap-mandatory"
-		>
-			<div class="grid grid-cols-3 gap-5 h-screen py-4 px-2 w-[280vw]">
-				<div class="h-full snap-center">
-					<Paper
-						variant="cream"
-						class="flex flex-col items-center justify-center h-full p-6"
-					>
-						Some journal content for journal ID: {params.journalId}
-					</Paper>
+		<Switch>
+			<Match when={journalData().isLoading}>
+				<div class="p-4">Loading journal...</div>
+			</Match>
+			<Match when={journalData().error}>
+				<div class="p-4 text-red-600">
+					Error loading journal: {journalData().error?.message}
 				</div>
-				<div class="h-full snap-center">
-					<Paper variant="white" class="flex flex-col h-full p-6">
-						Some journal content for journal ID: {params.journalId}
-					</Paper>
+			</Match>
+			<Match when={!journalData().journal}>
+				<div class="p-4">Journal not found</div>
+			</Match>
+			<Match when={journalData().journal}>
+				<div
+					ref={setScrollRef}
+					class="overflow-x-auto h-screen no-scrollbar scroll-smooth snap-x snap-mandatory"
+				>
+					<div class="grid grid-cols-3 gap-5 h-screen py-4 px-2 w-[280vw]">
+						<div class="h-full snap-center">
+							<Paper
+								variant="cream"
+								class="flex flex-col items-center justify-center h-full p-6"
+							>
+								Some journal content for journal ID: {params.journalId}
+							</Paper>
+						</div>
+						<div class="h-full snap-center">
+							<Paper variant="white" class="flex flex-col h-full p-6">
+								Some journal content for journal ID: {params.journalId}
+							</Paper>
+						</div>
+						<div class="h-full snap-center">
+							<Paper variant="cream" class="flex flex-col h-full p-6 gap-4">
+								<h2 class="text-xl font-bold font-serif">
+									{journalData().journal!.title}
+								</h2>
+								<p>{journalData().journal!.intention}</p>
+								<section>
+									<h3 class="text-lg font-semibold">Index</h3>
+									<ul class="list-disc pl-5">
+										<li>Daily Logs</li>
+										<li>Monthly Reflections</li>
+										<li>Goals</li>
+										<li>Ideas</li>
+									</ul>
+								</section>
+								<section class="mt-auto flex items-center justify-between">
+									<p class="text-ink-black/70">
+										Created {getRelativeTime(journalData().journal!.createdAt)}
+									</p>
+									<Button variant="secondary" size="sm">
+										See all journals
+										<LibraryIcon />
+									</Button>
+								</section>
+							</Paper>
+						</div>
+					</div>
 				</div>
-				<div class="h-full snap-center">
-					<Paper variant="cream" class="flex flex-col h-full p-6 gap-4">
-						<h2 class="text-xl font-bold font-serif">{journal.title}</h2>
-						<p>{journal.intention}</p>
-						<section>
-							<h3 class="text-lg font-semibold">Index</h3>
-							<ul class="list-disc pl-5">
-								<li>Daily Logs</li>
-								<li>Monthly Reflections</li>
-								<li>Goals</li>
-								<li>Ideas</li>
-							</ul>
-						</section>
-						<section class="mt-auto flex items-center justify-between">
-							<p class="text-ink-black/70">
-								Created {getRelativeTime(journal.createdAt)}
-							</p>
-							<Button variant="secondary" size="sm">
-								See all journals
-								<LibraryIcon />
-							</Button>
-						</section>
-					</Paper>
-				</div>
-			</div>
-		</div>
+			</Match>
+		</Switch>
 	);
 }

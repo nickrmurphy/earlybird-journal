@@ -47,20 +47,18 @@ export function HomePage() {
 				}
 			>
 				<Show
-					when={journalsData().journals.length === 0}
-					fallback={
-						<For each={journalsData().journals}>
-							{(journal) => (
-								<JournalCard
-									journalId={journal.id}
-									title={journal.title}
-									createdAt={journal.createdAt}
-								/>
-							)}
-						</For>
-					}
+					when={journalsData().journals.length > 0}
+					fallback={<WelcomeScreen />}
 				>
-					<WelcomeScreen />
+					<For each={journalsData().journals}>
+						{(journal) => (
+							<JournalCard
+								journalId={journal.id}
+								title={journal.title}
+								createdAt={journal.createdAt}
+							/>
+						)}
+					</For>
 				</Show>
 			</Show>
 		</Show>
