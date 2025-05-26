@@ -1,26 +1,50 @@
-Use bun instead of npm or yarn to install dependencies and run scripts.
+# Development Guidelines
 
-This project uses SolidJS, not React. Make sure to use SolidJS syntax and features when writing components.
+## Package Management
+Use `bun` as the package manager for installing dependencies and running scripts instead of npm or yarn.
 
-Try to keep the code simple and avoid unnecessary complexity.
+## Framework
+This project uses **SolidJS**, not React. Ensure all components use SolidJS syntax, patterns, and features.
 
-Use Tailwind CSS for styling whenever possible.
+## Code Philosophy
+- Keep code simple and avoid unnecessary complexity
+- Prioritize readability and maintainability
+- Follow existing project patterns and conventions
 
-When styling components, use the custom colors defined in main.css, plus black and white only.
+## Styling
+- Use **Tailwind CSS** for all styling
+- Limit color palette to:
+    - Custom colors defined in `main.css`
+    - Black and white only
+- Avoid inline styles or custom CSS when Tailwind classes are available
 
-Avoid building one-off components and markup. Instead create small stateless components that can be reused across the application.
-Also check the src/components directory for existing components that can be reused.
+## Component Architecture
+- Create small, stateless, reusable components
+- Avoid building one-off components or markup
+- Check `src/components` directory for existing components before creating new ones
+- Follow naming conventions:
+    - **PascalCase** for component names
+    - **kebab-case** for file names
 
-When creating new components, make sure to follow the naming conventions used in the project. Use PascalCase for component names and kebab-case for file names.
+## Dependencies
+- Minimize external dependencies
+- Only add dependencies that provide significant value
+- Consider using existing libraries or writing custom code before adding new packages
+- Evaluate if the functionality can be achieved with current dependencies
 
-Avoid adding unnecessary dependencies. If you need to add a new dependency, make sure it is necessary and provides significant value. 
-Instead of adding a new dependency, consider using existing libraries or writing your own code.
+## Commit Message Format
+Use the pattern: `<type>: <description>`
 
-Always generate commit messages in this pattern: <type>: <description>
-feat: - new features
-fix: - bug fixes
-update: - improvements/changes
-refactor: - code restructuring
-style: - formatting, CSS changes
-docs: - documentation
-chore: - maintenance tasks
+### Types
+- `feat`: New features
+- `fix`: Bug fixes  
+- `update`: Improvements/changes
+- `refactor`: Code restructuring
+- `style`: Formatting, CSS changes
+- `docs`: Documentation
+- `chore`: Maintenance tasks
+
+### Guidelines
+- Keep messages concise
+- Focus on what changed, not why (unless complex)
+- Use present tense ("add" not "added")
