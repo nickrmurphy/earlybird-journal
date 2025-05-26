@@ -1,27 +1,31 @@
 import { db } from "@/db/db";
 import { type Journal, journals } from "@/db/schema";
-import { createMemo, createResource } from "solid-js";
-
-const getJournalsQuery = () =>
-	db.select().from(journals).orderBy(journals.createdAt);
+import { createResource } from "solid-js";
 
 export function useJournals() {
 	const [results] = createResource(async () => {
 		try {
-			const rows = await getJournalsQuery().execute();
-			return rows;
+			const rows = await db
+				.select()
+				.from(journals)
+				.orderBy(journals.createdAt)
+				.execute();
+			return rows as Journal[];
 		} catch (error) {
 			console.error("Failed to fetch journals:", error);
 			throw error;
 		}
 	});
 
-	return createMemo(() => {
-		const rows = results();
-		return {
-			journals: rows ? (rows as Journal[]) : [],
-			isLoading: results.state === "pending",
-			error: results.error,
-		};
-	});
+	return {
+		get journals() {
+			return results() || [];
+		},
+		get isLoading() {
+			return results.state === "pending";
+		},
+		get error() {
+			return results.error;
+		},
+	};
 }

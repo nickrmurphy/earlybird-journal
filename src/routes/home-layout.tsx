@@ -3,7 +3,7 @@ import { Paper } from "@/components/surfaces";
 import { useLocation } from "@solidjs/router";
 import { PlusIcon } from "lucide-solid";
 import type { ParentComponent } from "solid-js";
-import { Switch, Match } from "solid-js";
+import { Match, Switch } from "solid-js";
 
 export const HomePageLayout: ParentComponent = (props) => {
 	const location = useLocation();
@@ -12,21 +12,19 @@ export const HomePageLayout: ParentComponent = (props) => {
 	return (
 		<div class="flex h-screen p-2">
 			<Paper as="aside" class="w-64 min-h-full p-4 flex flex-col">
-				<aside>
-					<Button
-						as="a"
-						href={isNewRoute ? "/" : "/new"}
-						variant={isNewRoute ? "secondary" : "primary"}
-					>
-						<Switch>
-							<Match when={isNewRoute}>Cancel</Match>
-							<Match when={!isNewRoute}>
-								Create a journal
-								<PlusIcon />
-							</Match>
-						</Switch>
-					</Button>
-				</aside>
+				<Button
+					as="a"
+					href={isNewRoute ? "/" : "/new"}
+					variant={isNewRoute ? "secondary" : "primary"}
+				>
+					<Switch>
+						<Match when={isNewRoute}>Cancel</Match>
+						<Match when={!isNewRoute}>
+							Create a journal
+							<PlusIcon />
+						</Match>
+					</Switch>
+				</Button>
 			</Paper>
 			<div class="flex-1 overflow-y-auto grid grid-cols-2 gap-4 px-5">
 				{props.children}

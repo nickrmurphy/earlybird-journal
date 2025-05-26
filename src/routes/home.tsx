@@ -37,20 +37,20 @@ export function HomePage() {
 	const journalsData = useJournals();
 
 	return (
-		<Show when={!journalsData().isLoading} fallback={<div>Loading...</div>}>
+		<Show when={!journalsData.isLoading} fallback={<div>Loading...</div>}>
 			<Show
-				when={!journalsData().error}
+				when={!journalsData.error}
 				fallback={
 					<div class="p-4 text-red-600">
-						Error loading journals: {journalsData().error?.message}
+						Error loading journals: {journalsData.error?.message}
 					</div>
 				}
 			>
 				<Show
-					when={journalsData().journals.length > 0}
+					when={journalsData.journals.length > 0}
 					fallback={<WelcomeScreen />}
 				>
-					<For each={journalsData().journals}>
+					<For each={journalsData.journals}>
 						{(journal) => (
 							<JournalCard
 								journalId={journal.id}

@@ -8,19 +8,16 @@ import { createSignal } from "solid-js";
 export const NewJournalPage = () => {
 	const navigate = useNavigate();
 	const { create, isCreating, error } = useCreateJournal();
+	const [title, setTitle] = createSignal("");
+	const [intention, setIntention] = createSignal("");
 
-	const handleSubmit = async ({
-		title,
-		intention,
-	}: {
-		title: string;
-		intention: string;
-	}) => {
+	const handleSubmit = async (e: SubmitEvent) => {
+		e.preventDefault();
 		try {
 			// TODO: Replace "clientId" with actual client ID or context
 			const [{ id }] = await create({
-				title,
-				intention,
+				title: title(),
+				intention: intention(),
 				updatedBy: "clientId",
 			});
 			navigate(`/journal/${id}`);
@@ -33,72 +30,43 @@ export const NewJournalPage = () => {
 	return (
 		<Paper variant="white">
 			<main class="col-span-2 p-4">
-				<NewJournalForm
+				<form
+					class="flex flex-col gap-4 mt-6"
+					autocomplete="off"
 					onSubmit={handleSubmit}
-					isLoading={isCreating()}
-					error={error()}
-				/>
+				>
+					{error() && (
+						<div class="p-3 bg-red-50 border border-red-200 rounded-md text-red-700">
+							{error()?.message}
+						</div>
+					)}
+					<Input
+						label="Title"
+						type="text"
+						name="title"
+						value={title()}
+						onInput={(e) => setTitle(e.currentTarget.value)}
+						placeholder="Journal title"
+						required
+						disabled={isCreating()}
+					/>
+					<Textarea
+						label="Intention"
+						name="intention"
+						rows={6}
+						value={intention()}
+						onInput={(e) => setIntention(e.currentTarget.value)}
+						placeholder="What is your intention for this journal?"
+						required
+						disabled={isCreating()}
+					/>
+					<div>
+						<Button type="submit" disabled={isCreating()}>
+							{isCreating() ? "Creating..." : "Continue"} <ArrowRightIcon />
+						</Button>
+					</div>
+				</form>
 			</main>
 		</Paper>
 	);
 };
-
-function NewJournalForm({
-	onSubmit,
-	isLoading = false,
-	error = null,
-}: {
-	onSubmit: ({
-		title,
-		intention,
-	}: { title: string; intention: string }) => void;
-	isLoading?: boolean;
-	error?: Error | null;
-}) {
-	const [title, setTitle] = createSignal("");
-	const [intention, setIntention] = createSignal("");
-
-	const handleSubmit = (e: SubmitEvent) => {
-		e.preventDefault();
-		onSubmit({ title: title(), intention: intention() });
-	};
-
-	return (
-		<form
-			class="flex flex-col gap-4 mt-6"
-			autocomplete="off"
-			onSubmit={handleSubmit}
-		>
-			{error && (
-				<div class="p-3 bg-red-50 border border-red-200 rounded-md text-red-700">
-					{error.message}
-				</div>
-			)}
-			<Input
-				label="Title"
-				type="text"
-				name="title"
-				value={title()}
-				onInput={(e) => setTitle(e.currentTarget.value)}
-				placeholder="Journal title"
-				required
-				disabled={isLoading}
-			/>
-			<Textarea
-				label="Intention"
-				name="intention"
-				rows={6}
-				value={intention()}
-				onInput={(e) => setIntention(e.currentTarget.value)}
-				placeholder="What is your intention for this journal?"
-				required
-				disabled={isLoading}
-			/>
-			<div>
-				<Button type="submit" disabled={isLoading}>
-					{isLoading ? "Creating..." : "Continue"} <ArrowRightIcon />
-				</Button>
-			</div>
-		</form>
-	);
-}

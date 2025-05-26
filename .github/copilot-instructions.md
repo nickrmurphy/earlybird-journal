@@ -5,6 +5,7 @@ Use `bun` as the package manager for installing dependencies and running scripts
 
 ## Framework
 This project uses **SolidJS**, not React. Ensure all components use SolidJS syntax, patterns, and features.
+Keep in mind the differences between SolidJS and React, especially regarding reactivity and component lifecycle.
 
 ## Code Philosophy
 - Keep code simple and avoid unnecessary complexity

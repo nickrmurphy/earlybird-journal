@@ -2,8 +2,8 @@ import { PGlite } from "@electric-sql/pglite";
 import { live } from "@electric-sql/pglite/live";
 import { drizzle } from "drizzle-orm/pglite";
 
-export let client: PGlite;
-export let db: ReturnType<typeof drizzle>;
+let client: PGlite;
+let db: ReturnType<typeof drizzle>;
 
 export const initializeDatabase = async () => {
 	if (!client) {
@@ -15,3 +15,5 @@ export const initializeDatabase = async () => {
 	}
 	return { client, db };
 };
+
+export { client, db };

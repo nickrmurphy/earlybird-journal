@@ -31,39 +31,28 @@ const PGliteProvider: ParentComponent<{ db: PGlite }> = (props) => {
 
 export const AppInitializer: ParentComponent = (props) => {
 	const [initialized, setInitialized] = createSignal(false);
-	const [error, setError] = createSignal<Error | null>(null);
+	const [error, setError] = createSignal<string | null>(null);
 
 	createEffect(() => {
-		let mounted = true;
 		(async () => {
 			try {
 				await initializeDatabase();
 				await runMigrations(db, migrations);
-				if (mounted) {
-					setInitialized(true);
-				}
+				setInitialized(true);
 			} catch (err) {
-				const error =
-					err instanceof Error ? err : new Error("Failed to initialize app");
-				console.error("Failed to run migrations:", error);
-				if (mounted) {
-					setError(error);
-				}
+				const message =
+					err instanceof Error ? err.message : "Failed to initialize app";
+				console.error("Failed to run migrations:", err);
+				setError(message);
 			}
 		})();
-
-		return () => {
-			mounted = false;
-		};
 	});
 
 	return (
 		<Show
 			when={!error()}
 			fallback={
-				<div class="p-4 text-red-600">
-					Failed to initialize app: {error()?.message}
-				</div>
+				<div class="p-4 text-red-600">Failed to initialize app: {error()}</div>
 			}
 		>
 			<Show when={initialized()} fallback={<div>Initializing...</div>}>

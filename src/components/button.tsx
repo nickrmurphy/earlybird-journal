@@ -5,19 +5,19 @@ import type { Component, JSX } from "solid-js";
 type ButtonVariant = "primary" | "secondary" | "ghost" | "ink";
 type ButtonSize = "sm" | "md" | "lg";
 
-interface BaseButtonProps {
+interface ButtonProps {
 	variant?: ButtonVariant;
 	size?: ButtonSize;
 	children?: JSX.Element;
 	class?: string;
-	className?: string;
+	as?: "a";
+	href?: string;
 }
 
-type ButtonProps = BaseButtonProps &
+type NativeButtonProps = ButtonProps &
 	JSX.ButtonHTMLAttributes<HTMLButtonElement>;
-type LinkButtonProps = BaseButtonProps & {
-	as: "a";
-} & JSX.AnchorHTMLAttributes<HTMLAnchorElement>;
+type NativeLinkProps = ButtonProps &
+	JSX.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 const variantClasses: Record<ButtonVariant, string> = {
 	primary:
@@ -35,26 +35,30 @@ const sizeClasses: Record<ButtonSize, string> = {
 	lg: "px-6 py-3 text-lg",
 };
 
-export const Button: Component<ButtonProps | LinkButtonProps> = (props) => {
+export const Button: Component<NativeButtonProps | NativeLinkProps> = (
+	props,
+) => {
 	const [local, rest] = splitProps(props, [
 		"variant",
 		"size",
 		"children",
 		"class",
-		"className",
+		"as",
+		"href",
 	]);
 
 	const buttonClasses = clsx(
 		variantClasses[local.variant || "primary"],
 		sizeClasses[local.size || "md"],
 		"font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] flex items-center justify-center",
-		local.class || local.className || "",
+		local.class,
 	);
 
-	if ("as" in props && props.as === "a") {
+	if (local.as === "a") {
 		return (
 			<a
 				class={buttonClasses}
+				href={local.href}
 				{...(rest as JSX.AnchorHTMLAttributes<HTMLAnchorElement>)}
 			>
 				{local.children}
