@@ -1,7 +1,7 @@
-import { Button, JournalCard } from "@/components";
+import { button, JournalCard } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { getJournals } from "@/resources";
-import { createAsync } from "@solidjs/router";
+import { A, createAsync } from "@solidjs/router";
 import { For, Show } from "solid-js";
 
 const WelcomeScreen = () => {
@@ -22,9 +22,9 @@ const WelcomeScreen = () => {
 					</p>
 				</div>
 				<div class="text-center space-y-1">
-					<Button size="lg" as="a" href="/new">
+					<A class={button({ size: "lg" })} href="/new">
 						Start My First Journal
-					</Button>
+					</A>
 					<p class="text-sm text-graphite mt-2">
 						We'll create a journal for this month to get you started
 					</p>

@@ -1,4 +1,4 @@
-import { cva } from "cva";
+import { cva, type VariantProps } from "cva";
 import type { JSX } from "solid-js";
 
 export const button = cva({
@@ -20,7 +20,8 @@ export const button = cva({
 	},
 });
 
-type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement>;
+type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
+	VariantProps<typeof button>;
 
 export function Button(props: ButtonProps) {
 	return <button {...props} class={button(props)} />;
