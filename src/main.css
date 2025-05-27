@@ -17,6 +17,7 @@
 
 	/* Writing utensil colors */
 	--color-ink-black: #1a1a1a;
+	--color-ink-white: #f4f1ea;
 	--color-ink-blue: #1e40af;
 	--color-ink-red: #dc2626;
 	--color-graphite: oklch(44.4% 0.011 73.639);
@@ -26,6 +27,8 @@
 	--color-paper-white: oklch(97% 0.001 106.424);
 	--color-paper-cream: oklch(92.3% 0.003 48.717);
 	--color-paper-aged: #f4f1ea;
+	--color-acrylic-black: #0f0f0f;
+	--color-acrylic-white: #f4f1ea;
 }
 
 @utility no-scrollbar {

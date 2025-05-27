@@ -13,7 +13,7 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.15.3",
-		"clsx": "^2.1.1",
+		"cva": "^1.0.0-beta.4",
 		"drizzle": "^1.4.0",
 		"drizzle-orm": "^0.43.1",
 		"lucide-solid": "^0.511.0",

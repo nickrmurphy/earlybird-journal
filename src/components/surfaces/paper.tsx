@@ -1,22 +1,27 @@
-import clsx from "clsx/lite";
-import { splitProps } from "solid-js";
+import { cva, type VariantProps } from "cva";
 import type { Component, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-export interface PaperProps extends JSX.HTMLAttributes<HTMLElement> {
-	as?: keyof JSX.IntrinsicElements;
-	variant?: "cream" | "white";
-}
+const paper = cva({
+	base: "rounded-lg shadow",
+	variants: {
+		variant: {
+			cream: "bg-paper-cream",
+			white: "bg-paper-white",
+		},
+	},
+	defaultVariants: {
+		variant: "white",
+	},
+});
+
+type PaperProps = JSX.HTMLAttributes<HTMLElement> &
+	VariantProps<typeof paper> & {
+		as?: keyof JSX.IntrinsicElements;
+	};
 
 export const Paper: Component<PaperProps> = (props) => {
-	const [local, rest] = splitProps(props, ["as", "variant", "class"]);
-
-	const variantClass =
-		local.variant === "cream"
-			? "bg-paper-cream border border-ink-black/10"
-			: "bg-paper-white border border-ink-black/10";
-
-	const className = clsx(variantClass, "rounded-lg shadow", local.class);
-
-	return <Dynamic component={local.as || "div"} class={className} {...rest} />;
+	return (
+		<Dynamic {...props} component={props.as || "div"} class={paper(props)} />
+	);
 };
