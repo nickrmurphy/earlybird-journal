@@ -1,7 +1,7 @@
 import { sql } from "drizzle-orm";
 import { relations } from "drizzle-orm";
 import { sqliteTable, text, integer, unique } from "drizzle-orm/sqlite-core";
-import { getClientId } from "./clientid";
+import { getClientId } from "./db.utils";
 
 // Common columns for createdAt, updatedAt, updatedBy
 const withTimestamps = {

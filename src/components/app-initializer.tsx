@@ -1,6 +1,6 @@
 import { db, initializeDatabase } from "@/db/db";
 import migrations from "@/db/migrations.json";
-import { runMigrations } from "@/db/run-migrations";
+import { runMigrations } from "@/db/db.utils";
 import {
 	type ParentComponent,
 	Switch,
