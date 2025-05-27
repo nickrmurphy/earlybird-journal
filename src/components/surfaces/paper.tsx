@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "cva";
 import type { Component, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
-const paper = cva({
+export const paper = cva({
 	base: "rounded-lg shadow",
 	variants: {
 		variant: {

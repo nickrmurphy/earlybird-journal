@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@/components";
+import { Button, Field, Input, Label, Textarea } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { createJournal } from "@/resources";
 import { useNavigate } from "@solidjs/router";
@@ -35,24 +35,28 @@ export const NewJournalPage = () => {
 					autocomplete="off"
 					onSubmit={handleSubmit}
 				>
-					<Input
-						label="Title"
-						type="text"
-						name="title"
-						value={title()}
-						onInput={(e) => setTitle(e.currentTarget.value)}
-						placeholder="Journal title"
-						required
-					/>
-					<Textarea
-						label="Intention"
-						name="intention"
-						rows={6}
-						value={intention()}
-						onInput={(e) => setIntention(e.currentTarget.value)}
-						placeholder="What is your intention for this journal?"
-						required
-					/>
+					<Field>
+						<Label>Title</Label>
+						<Input
+							type="text"
+							name="title"
+							value={title()}
+							onInput={(e) => setTitle(e.currentTarget.value)}
+							placeholder="Journal title"
+							required
+						/>
+					</Field>
+					<Field>
+						<Label>Intention</Label>
+						<Textarea
+							name="intention"
+							rows={6}
+							value={intention()}
+							onInput={(e) => setIntention(e.currentTarget.value)}
+							placeholder="What is your intention for this journal?"
+							required
+						/>
+					</Field>
 					<div>
 						<Button type="submit">
 							Continue <ArrowRightIcon />

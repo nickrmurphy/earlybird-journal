@@ -1,4 +1,6 @@
-export { JournalCard } from "./journal-card";
-export { AsButton as Button } from "./button";
-export { Input, Textarea } from "./input";
-export { ErrorBoundary } from "./error-boundary";
+export * from "./journal-card";
+export * from "./button";
+export * from "./input";
+export * from "./label";
+export * from './field';
+export * from './textarea';
