@@ -62,7 +62,7 @@ export function JournalPage() {
 								</ul>
 							</section>
 							<section class="mt-auto flex items-center justify-between">
-								<p class="text-ink-black/70">
+								<p class="text-graphite">
 									Created{" "}
 									{journalData()?.createdAt &&
 										getRelativeTime(journalData()?.createdAt || new Date(0))}

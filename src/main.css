@@ -15,15 +15,14 @@
 	--font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times,
 		serif;
 
-	/* Ink colors */
+	/* Writing utensil colors */
 	--color-ink-black: #1a1a1a;
 	--color-ink-blue: #1e40af;
 	--color-ink-red: #dc2626;
+	--color-graphite: oklch(44.4% 0.011 73.639);
 
 	/* Material colors */
 	--color-leather-black: #0f0f0f;
-
-	/* Surface colors */
 	--color-paper-white: oklch(97% 0.001 106.424);
 	--color-paper-cream: oklch(92.3% 0.003 48.717);
 	--color-paper-aged: #f4f1ea;

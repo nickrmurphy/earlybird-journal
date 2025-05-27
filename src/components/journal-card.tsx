@@ -17,7 +17,7 @@ export function JournalCard(props: JournalCardProps) {
 		>
 			<Paper class="w-full h-full">
 				<h2 class="text-xl font-bold font-serif">{props.title}</h2>
-				<p class="mt-2 text-ink-black/70">
+				<p class="mt-2 text-graphite">
 					Created {getRelativeTime(props.createdAt)}
 				</p>
 			</Paper>

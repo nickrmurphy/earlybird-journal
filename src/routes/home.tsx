@@ -15,7 +15,7 @@ const WelcomeScreen = () => {
 					<h1 class="text-3xl font-bold font-serif text-ink-black">
 						Welcome to Your Digital Bullet Journal
 					</h1>
-					<p class="text-lg text-ink-black/80">
+					<p class="text-lg text-graphite">
 						A bullet journal is your personal organization system—a place to
 						track your daily tasks, capture thoughts, set goals, and reflect on
 						your journey.
@@ -25,7 +25,7 @@ const WelcomeScreen = () => {
 					<Button size="lg" as="a" href="/new">
 						Start My First Journal
 					</Button>
-					<p class="text-sm text-ink-black/60 mt-2">
+					<p class="text-sm text-graphite mt-2">
 						We'll create a journal for this month to get you started
 					</p>
 				</div>
