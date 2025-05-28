@@ -51,3 +51,27 @@ export const createEntry = async (type: Bullet, data: {
     revalidate(getEntries.key);
     return result;
 }
+
+export const updateEntry = async (type: Bullet, id: string, data: {
+    content?: string;
+}) => {
+    let result: Entry;
+
+    switch (type) {
+        case "note":
+            result = { ...(await db.update(notes).set(data).where(eq(notes.id, id)).returning().execute())[0], type: "note" };
+            break;
+        case "feeling":
+            result = { ...(await db.update(moods).set(data).where(eq(moods.id, id)).returning().execute())[0], type: "feeling" };
+            break;
+        case "task":
+            result = { ...(await db.update(actions).set(data).where(eq(actions.id, id)).returning().execute())[0], type: "task" };
+            break;
+        case "event":
+            result = { ...(await db.update(events).set(data).where(eq(events.id, id)).returning().execute())[0], type: "event" };
+            break;
+    }
+
+    revalidate(getEntries.key);
+    return result;
+}

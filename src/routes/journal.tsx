@@ -1,8 +1,9 @@
 import { Button } from "@/components";
 import { BulletIcon } from "@/components/bullet-icon";
 import { Paper } from "@/components/surfaces";
-import { createEntry, getEntries, getJournal } from "@/resources";
+import { createEntry, getEntries, getJournal, updateEntry } from "@/resources";
 import { getRelativeTime } from "@/utils/time";
+import { debounce } from "@/utils/debounce";
 import { createAsync, useParams } from "@solidjs/router";
 import { cx } from "cva";
 import { LibraryIcon, PlusIcon } from "lucide-solid";
@@ -28,24 +29,47 @@ const Page: Component<ComponentProps<typeof Paper>> = (props) => (
 
 const BulletList: Component<ComponentProps<"ul"> & { entries: Entry[] }> = (
 	props,
-) => (
-	<ul
-		class={cx("divide-y divide-ink-black/50 divide-dotted", props.class)}
-		{...props}
-	>
-		{props.entries.map((entry) => (
-			<li
-				class={cx(
-					"flex items-baseline gap-4 py-2 text-base  last:border-b border-dotted border-ink-black/50",
-					entry.type,
-				)}
-			>
-				<BulletIcon class="size-4 text-graphite my-auto" type={entry.type} />
-				<span>{entry.content}</span>
-			</li>
-		))}
-	</ul>
-);
+) => {
+	const handleInput = debounce(
+		async (entryId: string, entryType: Bullet, content: string) => {
+			await updateEntry(entryType, entryId, { content });
+		},
+		500,
+	);
+
+	return (
+		<ul
+			class={cx("divide-y divide-ink-black/50 divide-dotted", props.class)}
+			{...props}
+		>
+			<Index each={props.entries}>
+				{(entry) => {
+					const [localValue, setLocalValue] = createSignal(entry().content);
+					// Keep localValue in sync if entry().content changes from outside (e.g. after save)
+					createEffect(() => {
+						setLocalValue(entry().content);
+					});
+					return (
+						<li class="flex items-baseline gap-4 py-2 text-base  last:border-b border-dotted border-ink-black/50">
+							<BulletIcon
+								class="size-4 text-graphite my-auto"
+								type={entry().type}
+							/>
+							<input
+								value={localValue()}
+								onInput={(e) => {
+									setLocalValue(e.currentTarget.value);
+									handleInput(entry().id, entry().type, e.currentTarget.value);
+								}}
+								class="w-full focus:outline-none"
+							/>
+						</li>
+					);
+				}}
+			</Index>
+		</ul>
+	);
+};
 
 type BulletTypeButtonProps = Omit<
 	ComponentProps<"button">,
@@ -164,7 +188,7 @@ export function JournalPage() {
 							variant="primary"
 							onClick={handleNewEntryButton}
 						>
-							Add Entry
+							Create an entry
 							<PlusIcon />
 						</Button>
 					</Page>
