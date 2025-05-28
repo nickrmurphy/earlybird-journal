@@ -197,11 +197,13 @@ export function JournalPage() {
 							</ul>
 						</section>
 						<section class="mt-auto flex items-center justify-between">
-							<p class="text-graphite">
-								Created{" "}
-								{journalData()?.createdAt &&
-									getRelativeTime(journalData()?.createdAt || new Date(0))}
-							</p>
+							<Show when={journalData()?.createdAt}>
+								{(createdAt) => (
+									<p class="text-graphite">
+										Created {getRelativeTime(createdAt())}
+									</p>
+								)}
+							</Show>
 							<Button variant="secondary" size="sm">
 								See all journals
 								<LibraryIcon />
