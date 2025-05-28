@@ -37,6 +37,11 @@ export const NewEntryItem: Component<{
 	const [activeType, setActiveType] = createSignal<Bullet>("note");
 	const [content, setContent] = createSignal<string>("");
 
+	const handleBlur = () => {
+		props.onblur(activeType(), content());
+		setContent("");
+	};
+
 	return (
 		<div class="flex items-baseline gap-4 group">
 			<div class="size-4" />
@@ -46,7 +51,7 @@ export const NewEntryItem: Component<{
 					class="w-full h-fit text-base focus:outline-none hover:border-b border-dotted group-focus-within:border-b pt-2 pb-1 border-black/20 transition-all"
 					value={content()}
 					oninput={(e) => setContent(e.currentTarget.value)}
-					onblur={() => props.onblur(activeType(), content().trim())}
+					onblur={handleBlur}
 				/>
 				<div class="opacity-0 group-focus-within:opacity-100 transition-all flex gap-3 items-center my-auto">
 					<Index each={types}>
