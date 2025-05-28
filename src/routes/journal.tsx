@@ -1,5 +1,4 @@
-import { Button, EntryItem } from "@/components";
-import { BulletIcon } from "@/components/bullet-icon";
+import { Button, EntryItem, NewEntryItem } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { createEntry, getEntries, getJournal, updateEntry } from "@/resources";
 import { getRelativeTime } from "@/utils/time";
@@ -52,70 +51,18 @@ const BulletList: Component<ComponentProps<"div"> & { entries: Entry[] }> = (
 	);
 };
 
-type BulletTypeButtonProps = Omit<
-	ComponentProps<"button">,
-	"type" | "active"
-> & {
-	type: Bullet;
-	active?: boolean;
-};
-
-const BulletTypeButton: Component<BulletTypeButtonProps> = (props) => (
-	<button
-		{...props}
-		type="button"
-		class={cx(
-			"hover:bg-black/5 p-1 rounded-full transition-all",
-			props.active ? "text-ink-black" : "text-ink-black/50",
-		)}
-	>
-		<BulletIcon type={props.type} class="size-5 " />
-	</button>
-);
-
 const NewBullet: Component<{ journalId: string }> = (props) => {
-	const types: Bullet[] = ["note", "event", "task", "mood"];
-	const [activeType, setActiveType] = createSignal<Bullet>("note");
-	const [content, setContent] = createSignal<string>("");
-
-	const handleSubmit = async () => {
-		if (!content().trim()) return;
+	const handleBlur = async (type: Bullet, content: string) => {
+		if (!content.trim()) return;
 
 		await createEntry({
-			content: content().trim(),
+			content: content.trim(),
 			journalId: props.journalId,
-			type: activeType(),
-		}).then(() => {
-			setContent("");
-			setActiveType("note"); // Reset to default type
+			type,
 		});
 	};
 
-	return (
-		<div class="flex items-baseline gap-4 group">
-			<div class="size-4" />
-			<div class="w-full flex flex-col gap-2">
-				<input
-					id="new-bullet-input"
-					class="w-full h-fit text-base focus:outline-none hover:border-b border-dotted group-focus-within:border-b pt-2 pb-1 border-black/20 transition-all"
-					value={content()}
-					oninput={(e) => setContent(e.currentTarget.value)}
-					onblur={handleSubmit}
-				/>
-				<div class="opacity-0 group-focus-within:opacity-100 transition-all flex gap-3 items-center my-auto">
-					<Index each={types}>
-						{(type) => (
-							<BulletTypeButton
-								type={type()}
-								active={activeType() === type()}
-								onClick={() => setActiveType(type())}
-							/>
-						)}
-					</Index>
-				</div>
-			</div>
-		</div>
-	);
+	return <NewEntryItem onblur={handleBlur} />;
 };
 
 export function JournalPage() {
