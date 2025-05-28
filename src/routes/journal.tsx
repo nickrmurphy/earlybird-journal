@@ -19,7 +19,10 @@ import type { Bullet, Entry } from "@/types";
 const Page: Component<ComponentProps<typeof Paper>> = (props) => (
 	<Paper
 		{...props}
-		class={cx("h-full snap-center flex flex-col p-6", props.class)}
+		class={cx(
+			"h-full snap-center flex flex-col p-6 overflow-y-auto",
+			props.class,
+		)}
 	/>
 );
 
@@ -146,18 +149,18 @@ export function JournalPage() {
 					<Page variant="cream">
 						Some journal content for journal ID: {params.journalId}
 					</Page>
-					<Page variant="white" class="space-y-6 relative">
+					<Page variant="white" class="space-y-6 relative flex flex-col">
 						<header>
 							<h1 class="text-2xl font-bold">
 								{new Date().toLocaleDateString()}
 							</h1>
 						</header>
-						<section>
+						<section class="flex-1 flex flex-col">
 							<BulletList entries={entries()} />
 							<NewBullet journalId={params.journalId} />
 						</section>
 						<Button
-							class="absolute bottom-6 right-6"
+							class="sticky bottom-0 self-end z-10"
 							variant="primary"
 							onClick={handleNewEntryButton}
 						>
