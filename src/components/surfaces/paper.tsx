@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "cva";
-import type { Component, JSX } from "solid-js";
+import type { Component, ComponentProps, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 
 export const paper = cva({
@@ -15,7 +15,7 @@ export const paper = cva({
 	},
 });
 
-type PaperProps = JSX.HTMLAttributes<HTMLElement> &
+type PaperProps = ComponentProps<"div"> &
 	VariantProps<typeof paper> & {
 		as?: keyof JSX.IntrinsicElements;
 	};

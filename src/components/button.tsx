@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "cva";
 import type { JSX } from "solid-js";
 
 export const button = cva({
-	base: "font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-[0.98] flex items-center justify-center",
+	base: "font-sans rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ink-blue/50 focus:ring-offset-1 active:scale-98 flex items-center justify-center",
 	variants: {
 		variant: {
 			primary: "bg-acrylic-black text-ink-white shadow-md border-transparent",
