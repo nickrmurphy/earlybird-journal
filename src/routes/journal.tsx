@@ -89,9 +89,10 @@ const NewBullet: Component<{ journalId: string }> = (props) => {
 	const handleSubmit = async () => {
 		if (!content().trim()) return;
 
-		await createEntry(activeType(), {
+		await createEntry({
 			content: content().trim(),
 			journalId: props.journalId,
+			type: activeType(),
 		}).then(() => {
 			setContent("");
 			setActiveType("note"); // Reset to default type
