@@ -30,12 +30,9 @@ const Page: Component<ComponentProps<typeof Paper>> = (props) => (
 const BulletList: Component<ComponentProps<"ul"> & { entries: Entry[] }> = (
 	props,
 ) => {
-	const handleInput = debounce(
-		async (entryId: string, entryType: Bullet, content: string) => {
-			await updateEntry(entryType, entryId, { content });
-		},
-		500,
-	);
+	const handleInput = debounce(async (entryId: string, content: string) => {
+		await updateEntry(entryId, { content });
+	}, 500);
 
 	return (
 		<ul
@@ -52,7 +49,7 @@ const BulletList: Component<ComponentProps<"ul"> & { entries: Entry[] }> = (
 						<input
 							value={entry().content}
 							onInput={(e) => {
-								handleInput(entry().id, entry().type, e.currentTarget.value);
+								handleInput(entry().id, e.currentTarget.value);
 							}}
 							class="w-full focus:outline-none"
 						/>
@@ -85,7 +82,7 @@ const BulletTypeButton: Component<BulletTypeButtonProps> = (props) => (
 );
 
 const NewBullet: Component<{ journalId: string }> = (props) => {
-	const types: Bullet[] = ["note", "event", "task", "feeling"];
+	const types: Bullet[] = ["note", "event", "task", "mood"];
 	const [activeType, setActiveType] = createSignal<Bullet>("note");
 	const [content, setContent] = createSignal<string>("");
 

@@ -11,7 +11,7 @@ import type { Bullet } from "@/types";
 const iconMap = {
 	event: CircleDotIcon,
 	note: CircleMinusIcon,
-	feeling: CircleEqualIcon,
+	mood: CircleEqualIcon,
 	task: CircleCheckIcon,
 };
 

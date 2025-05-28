@@ -1,7 +1,8 @@
 import { sql } from "drizzle-orm";
 import { relations } from "drizzle-orm";
-import { sqliteTable, text, integer, unique } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { getClientId } from "./db.utils";
+import type { Bullet } from "@/types";
 
 // Common columns for createdAt, updatedAt, updatedBy
 const withTimestamps = {
@@ -17,95 +18,45 @@ export const journals = sqliteTable("journals", {
 	...withTimestamps,
 });
 
-export const days = sqliteTable(
-	"days",
-	{
-		id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-		journalId: text("journal_id")
-			.notNull()
-			.references(() => journals.id),
-		title: text("title")
-			.notNull()
-			.default(sql`(strftime('%w', 'now', 'localtime') || ', ' || strftime('%Y %m %d', 'now', 'localtime'))`),
-		date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
-		...withTimestamps,
-	},
-	(t) => [
-		unique().on(t.journalId, t.date),
-		unique('unique_journal_date').on(t.journalId, t.date),
-	],
-);
-
-
-// DRY: shared bullet fields
-const baseBulletSchema = {
-	id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-	journalId: text("journal_id")
-		.notNull()
-		.references(() => journals.id),
-	content: text("content").notNull(),
-	date: text("date").notNull().default(sql`(date('now', 'localtime'))`),
-	...withTimestamps,
+type BaseMeta = {
+	type: "task" | "mood";
 };
 
-export const notes = sqliteTable("notes", {
-	...baseBulletSchema,
+type TaskMeta = BaseMeta & {
+	type: "task";
+	status: "incomplete" | "complete" | "canceled";
+};
+
+type MoodMeta = BaseMeta & {
+	type: "mood";
+	level: number; // 1-10 scale
+};
+
+export const journalEntries = sqliteTable("journal_entries", {
+	id: text().primaryKey().$defaultFn(() => crypto.randomUUID()),
+	journalId: text()
+		.notNull()
+		.references(() => journals.id),
+	content: text().notNull(),
+	date: text().notNull().default(sql`(date('now', 'localtime'))`),
+	type: text({ enum: ["note", "task", "mood", "event"] }).notNull().$type<Bullet>(),
+	meta: text({ mode: "json" }).$type<TaskMeta | MoodMeta | null>(),
+	...withTimestamps,
 });
 
-export const actions = sqliteTable("actions", {
-	...baseBulletSchema,
-	originalDate: text("original_date").notNull().default(sql`(date('now', 'localtime'))`),
-	status: text("status", { enum: ["incomplete", "complete", "canceled"] }).notNull().default("incomplete"),
-});
 
-export const moods = sqliteTable("moods", {
-	...baseBulletSchema,
-	level: integer("level"),
-});
-
-export const events = sqliteTable("events", {
-	...baseBulletSchema,
-});
-
-export const daysRelations = relations(days, ({ one }) => ({
+export const journalEntriesRelations = relations(journalEntries, ({ one }) => ({
 	journal: one(journals, {
-		fields: [days.journalId],
+		fields: [journalEntries.journalId],
 		references: [journals.id],
 	}),
 }));
 
-export const notesRelations = relations(notes, ({ one }) => ({
-	journal: one(journals, {
-		fields: [notes.journalId],
-		references: [journals.id],
-	}),
-}));
-
-export const actionsRelations = relations(actions, ({ one }) => ({
-	journal: one(journals, {
-		fields: [actions.journalId],
-		references: [journals.id],
-	}),
-}));
-
-export const moodsRelations = relations(moods, ({ one }) => ({
-	journal: one(journals, {
-		fields: [moods.journalId],
-		references: [journals.id],
-	}),
-}));
-
-export const eventsRelations = relations(events, ({ one }) => ({
-	journal: one(journals, {
-		fields: [events.journalId],
-		references: [journals.id],
-	}),
-}));
+export type Journal = typeof journals.$inferSelect;
+export type JournalEntry = typeof journalEntries.$inferSelect;
 
 export type NewJournal = typeof journals.$inferInsert;
-export type Journal = typeof journals.$inferSelect;
-export type Day = typeof days.$inferSelect;
-export type Note = typeof notes.$inferSelect;
-export type Action = typeof actions.$inferSelect;
-export type Mood = typeof moods.$inferSelect;
-export type Event = typeof events.$inferSelect;
+export type NewJournalEntry = typeof journalEntries.$inferInsert;
+
+export type UpdateJournal = Omit<Partial<typeof journals.$inferInsert>, "id">;
+export type UpdateJournalEntry = Omit<Partial<typeof journalEntries.$inferInsert>, "id">;

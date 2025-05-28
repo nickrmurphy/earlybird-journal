@@ -1,11 +1,11 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "bb2bb8ae-e2bc-478a-8ce3-b1d5c7f7fb88",
+  "id": "7e5cf757-7538-487f-a7f8-953dd65def6a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "actions": {
-      "name": "actions",
+    "journal_entries": {
+      "name": "journal_entries",
       "columns": {
         "id": {
           "name": "id",
@@ -36,187 +36,19 @@
           "autoincrement": false,
           "default": "(date('now', 'localtime'))"
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_by": {
-          "name": "updated_by",
+        "type": {
+          "name": "type",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "original_date": {
-          "name": "original_date",
+        "meta": {
+          "name": "meta",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(date('now', 'localtime'))"
-        },
-        "status": {
-          "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "'incomplete'"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "actions_journal_id_journals_id_fk": {
-          "name": "actions_journal_id_journals_id_fk",
-          "tableFrom": "actions",
-          "tableTo": "journals",
-          "columnsFrom": [
-            "journal_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "days": {
-      "name": "days",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
-        },
-        "journal_id": {
-          "name": "journal_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(strftime('%w', 'now', 'localtime') || ', ' || strftime('%Y %m %d', 'now', 'localtime'))"
-        },
-        "date": {
-          "name": "date",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(date('now', 'localtime'))"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_by": {
-          "name": "updated_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "days_journal_id_date_unique": {
-          "name": "days_journal_id_date_unique",
-          "columns": [
-            "journal_id",
-            "date"
-          ],
-          "isUnique": true
-        },
-        "unique_journal_date": {
-          "name": "unique_journal_date",
-          "columns": [
-            "journal_id",
-            "date"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "days_journal_id_journals_id_fk": {
-          "name": "days_journal_id_journals_id_fk",
-          "tableFrom": "days",
-          "tableTo": "journals",
-          "columnsFrom": [
-            "journal_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "events": {
-      "name": "events",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "journal_id": {
-          "name": "journal_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "content": {
-          "name": "content",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "date": {
-          "name": "date",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(date('now', 'localtime'))"
         },
         "created_at": {
           "name": "created_at",
@@ -242,9 +74,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "events_journal_id_journals_id_fk": {
-          "name": "events_journal_id_journals_id_fk",
-          "tableFrom": "events",
+        "journal_entries_journal_id_journals_id_fk": {
+          "name": "journal_entries_journal_id_journals_id_fk",
+          "tableFrom": "journal_entries",
           "tableTo": "journals",
           "columnsFrom": [
             "journal_id"
@@ -310,161 +142,6 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "moods": {
-      "name": "moods",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "journal_id": {
-          "name": "journal_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "content": {
-          "name": "content",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "date": {
-          "name": "date",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(date('now', 'localtime'))"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_by": {
-          "name": "updated_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "level": {
-          "name": "level",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "moods_journal_id_journals_id_fk": {
-          "name": "moods_journal_id_journals_id_fk",
-          "tableFrom": "moods",
-          "tableTo": "journals",
-          "columnsFrom": [
-            "journal_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "notes": {
-      "name": "notes",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "journal_id": {
-          "name": "journal_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "content": {
-          "name": "content",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "date": {
-          "name": "date",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": "(date('now', 'localtime'))"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updated_by": {
-          "name": "updated_by",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "notes_journal_id_journals_id_fk": {
-          "name": "notes_journal_id_journals_id_fk",
-          "tableFrom": "notes",
-          "tableTo": "journals",
-          "columnsFrom": [
-            "journal_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
