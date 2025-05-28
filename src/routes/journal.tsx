@@ -43,29 +43,21 @@ const BulletList: Component<ComponentProps<"ul"> & { entries: Entry[] }> = (
 			{...props}
 		>
 			<Index each={props.entries}>
-				{(entry) => {
-					const [localValue, setLocalValue] = createSignal(entry().content);
-					// Keep localValue in sync if entry().content changes from outside (e.g. after save)
-					createEffect(() => {
-						setLocalValue(entry().content);
-					});
-					return (
-						<li class="flex items-baseline gap-4 py-2 text-base  last:border-b border-dotted border-ink-black/50">
-							<BulletIcon
-								class="size-4 text-graphite my-auto"
-								type={entry().type}
-							/>
-							<input
-								value={localValue()}
-								onInput={(e) => {
-									setLocalValue(e.currentTarget.value);
-									handleInput(entry().id, entry().type, e.currentTarget.value);
-								}}
-								class="w-full focus:outline-none"
-							/>
-						</li>
-					);
-				}}
+				{(entry) => (
+					<li class="flex items-baseline gap-4 py-2 text-base  last:border-b border-dotted border-ink-black/50">
+						<BulletIcon
+							class="size-4 text-graphite my-auto"
+							type={entry().type}
+						/>
+						<input
+							value={entry().content}
+							onInput={(e) => {
+								handleInput(entry().id, entry().type, e.currentTarget.value);
+							}}
+							class="w-full focus:outline-none"
+						/>
+					</li>
+				)}
 			</Index>
 		</ul>
 	);
