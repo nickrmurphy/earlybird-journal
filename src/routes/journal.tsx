@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import { Button, EntryItem } from "@/components";
 import { BulletIcon } from "@/components/bullet-icon";
 import { Paper } from "@/components/surfaces";
 import { createEntry, getEntries, getJournal, updateEntry } from "@/resources";
@@ -27,7 +27,7 @@ const Page: Component<ComponentProps<typeof Paper>> = (props) => (
 	/>
 );
 
-const BulletList: Component<ComponentProps<"ul"> & { entries: Entry[] }> = (
+const BulletList: Component<ComponentProps<"div"> & { entries: Entry[] }> = (
 	props,
 ) => {
 	const handleInput = debounce(async (entryId: string, content: string) => {
@@ -35,28 +35,20 @@ const BulletList: Component<ComponentProps<"ul"> & { entries: Entry[] }> = (
 	}, 500);
 
 	return (
-		<ul
+		<div
 			class={cx("divide-y divide-ink-black/50 divide-dotted", props.class)}
 			{...props}
 		>
 			<Index each={props.entries}>
 				{(entry) => (
-					<li class="flex items-baseline gap-4 py-2 text-base  last:border-b border-dotted border-ink-black/50">
-						<BulletIcon
-							class="size-4 text-graphite my-auto"
-							type={entry().type}
-						/>
-						<input
-							value={entry().content}
-							onInput={(e) => {
-								handleInput(entry().id, e.currentTarget.value);
-							}}
-							class="w-full focus:outline-none"
-						/>
-					</li>
+					<EntryItem
+						type={entry().type}
+						content={entry().content}
+						oninput={(value) => handleInput(entry().id, value)}
+					/>
 				)}
 			</Index>
-		</ul>
+		</div>
 	);
 };
 
