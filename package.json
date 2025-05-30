@@ -14,6 +14,8 @@
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.15.3",
+		"@zag-js/menu": "^1.13.1",
+		"@zag-js/solid": "^1.13.1",
 		"cva": "^1.0.0-beta.4",
 		"drizzle": "^1.4.0",
 		"drizzle-orm": "^0.43.1",
