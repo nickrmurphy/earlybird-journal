@@ -25,6 +25,6 @@ export const updateEntry = async (id: string, data: UpdateJournalEntry) => {
         .where(eq(journalEntries.id, id))
         .returning()
         .execute();
-    revalidate(getEntries.key);
+    revalidate(getEntries.key, true);
     return result;
 }

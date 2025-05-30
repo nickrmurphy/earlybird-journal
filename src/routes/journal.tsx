@@ -9,7 +9,7 @@ import { LibraryIcon, PlusIcon } from "lucide-solid";
 import {
 	type Component,
 	type ComponentProps,
-	Index,
+	For,
 	Show,
 	createEffect,
 	createSignal,
@@ -33,20 +33,25 @@ const BulletList: Component<ComponentProps<"div"> & { entries: Entry[] }> = (
 		await updateEntry(entryId, { content });
 	}, 500);
 
+	const handleTypeChange = async (entryId: string, type: Bullet) => {
+		await updateEntry(entryId, { type });
+	};
+
 	return (
 		<div
 			class={cx("divide-y divide-ink-black/50 divide-dotted", props.class)}
 			{...props}
 		>
-			<Index each={props.entries}>
+			<For each={props.entries}>
 				{(entry) => (
 					<EntryItem
-						type={entry().type}
-						content={entry().content}
-						oninput={(value) => handleInput(entry().id, value)}
+						type={entry.type}
+						content={entry.content}
+						oninput={(value) => handleInput(entry.id, value)}
+						ontypechange={(type) => handleTypeChange(entry.id, type)}
 					/>
 				)}
-			</Index>
+			</For>
 		</div>
 	);
 };

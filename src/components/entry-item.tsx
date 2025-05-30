@@ -13,6 +13,7 @@ type EntryItemProps = {
 	type: Bullet;
 	content: string;
 	oninput: (value: string) => void;
+	ontypechange?: (type: Bullet) => void;
 };
 
 const labelMap: Record<Bullet, string> = {
@@ -85,8 +86,11 @@ const EntryInput: Component<{
 export const EntryItem: Component<EntryItemProps> = (props) => {
 	const service = useMachine(menu.machine, {
 		id: createUniqueId(),
-		onSelect: (value) => {
-			console.log("Selected value:", value);
+		onSelect: (details) => {
+			const value = details.value;
+			if (value !== "delete" && BULLET_TYPES.includes(value as Bullet)) {
+				props.ontypechange?.(value as Bullet);
+			}
 		},
 	});
 	const api = createMemo(() => menu.connect(service, normalizeProps));
