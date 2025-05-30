@@ -1,9 +1,9 @@
-import { Button, EntryItem, NewEntryItem } from "@/components";
+import { button, Button, EntryItem, NewEntryItem } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { createEntry, getEntries, getJournal, updateEntry } from "@/resources";
 import { getRelativeTime } from "@/utils/time";
 import { debounce } from "@/utils/debounce";
-import { createAsync, useParams } from "@solidjs/router";
+import { createAsync, useParams, A } from "@solidjs/router";
 import { cx } from "cva";
 import { LibraryIcon, PlusIcon } from "lucide-solid";
 import {
@@ -146,10 +146,10 @@ export function JournalPage() {
 									</p>
 								)}
 							</Show>
-							<Button variant="secondary" size="sm">
-								See all journals
+							<A class={button({ variant: "secondary", size: "sm" })} href="/">
+								All journals
 								<LibraryIcon />
-							</Button>
+							</A>
 						</section>
 					</Page>
 				</div>
