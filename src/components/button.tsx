@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "cva";
+import { type VariantProps, cva } from "cva";
 import type { JSX } from "solid-js";
 
 export const button = cva({

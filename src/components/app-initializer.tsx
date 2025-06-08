@@ -1,10 +1,10 @@
 import { db, initializeDatabase } from "@/db/db";
-import migrations from "@/db/migrations.json";
 import { runMigrations } from "@/db/db.utils";
+import migrations from "@/db/migrations.json";
 import {
+	Match,
 	type ParentComponent,
 	Switch,
-	Match,
 	createSignal,
 	onMount,
 } from "solid-js";

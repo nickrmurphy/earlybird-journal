@@ -1,13 +1,13 @@
-import type { Bullet } from "@/types";
-import { BulletIcon } from "./bullet-icon";
-import type { Component } from "solid-js";
-import * as menu from "@zag-js/menu";
-import { normalizeProps, useMachine } from "@zag-js/solid";
-import { createMemo, createUniqueId, Show } from "solid-js";
 import { BULLET_TYPES } from "@/constants";
-import { Trash2Icon } from "lucide-solid";
+import type { Bullet } from "@/types";
+import * as menu from "@zag-js/menu";
 import type { Api } from "@zag-js/menu";
+import { normalizeProps, useMachine } from "@zag-js/solid";
+import { Trash2Icon } from "lucide-solid";
+import type { Component } from "solid-js";
+import { Show, createMemo, createUniqueId } from "solid-js";
 import type { JSX } from "solid-js";
+import { BulletIcon } from "./bullet-icon";
 
 type EntryItemProps = {
 	type: Bullet;

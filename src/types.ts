@@ -4,7 +4,7 @@
 export type Bullet = "event" | "note" | "mood" | "task";
 
 export type Entry = {
-    id: string;
-    type: Bullet;
-    content: string;
+	id: string;
+	type: Bullet;
+	content: string;
 };

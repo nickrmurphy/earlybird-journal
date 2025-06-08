@@ -1,5 +1,5 @@
-import { SQLocalDrizzle } from "sqlocal/drizzle";
 import { drizzle } from "drizzle-orm/sqlite-proxy";
+import { SQLocalDrizzle } from "sqlocal/drizzle";
 
 let sqlocalDrizzle: SQLocalDrizzle;
 let db: ReturnType<typeof drizzle>;

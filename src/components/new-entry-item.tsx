@@ -1,12 +1,12 @@
 import type { Bullet } from "@/types";
+import { cx } from "cva";
 import {
 	type Component,
 	type ComponentProps,
-	createSignal,
 	Index,
+	createSignal,
 } from "solid-js";
 import { BulletIcon } from "./bullet-icon";
-import { cx } from "cva";
 
 const types: Bullet[] = ["note", "event", "task", "mood"];
 

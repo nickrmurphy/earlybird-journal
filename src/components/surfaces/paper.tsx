@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "cva";
+import { type VariantProps, cva } from "cva";
 import type { Component, ComponentProps, JSX } from "solid-js";
 import { Dynamic } from "solid-js/web";
 

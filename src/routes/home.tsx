@@ -1,4 +1,4 @@
-import { button, JournalCard } from "@/components";
+import { JournalCard, button } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { getJournals } from "@/resources";
 import { A, createAsync } from "@solidjs/router";

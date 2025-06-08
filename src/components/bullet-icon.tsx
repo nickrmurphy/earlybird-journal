@@ -1,3 +1,4 @@
+import type { Bullet } from "@/types";
 import {
 	CircleCheckIcon,
 	CircleDotIcon,
@@ -6,7 +7,6 @@ import {
 } from "lucide-solid";
 import type { Component, ComponentProps } from "solid-js";
 import { Dynamic } from "solid-js/web";
-import type { Bullet } from "@/types";
 
 const iconMap = {
 	event: CircleDotIcon,

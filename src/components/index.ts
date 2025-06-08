@@ -4,5 +4,5 @@ export * from "./entry-item";
 export * from "./new-entry-item";
 export * from "./input";
 export * from "./label";
-export * from './field';
-export * from './textarea';
+export * from "./field";
+export * from "./textarea";

@@ -1,9 +1,10 @@
-import { button, Button, EntryItem, NewEntryItem } from "@/components";
+import { Button, EntryItem, NewEntryItem, button } from "@/components";
 import { Paper } from "@/components/surfaces";
 import { createEntry, getEntries, getJournal, updateEntry } from "@/resources";
-import { getRelativeTime } from "@/utils/time";
+import type { Bullet, Entry } from "@/types";
 import { debounce } from "@/utils/debounce";
-import { createAsync, useParams, A } from "@solidjs/router";
+import { getRelativeTime } from "@/utils/time";
+import { A, createAsync, useParams } from "@solidjs/router";
 import { cx } from "cva";
 import { LibraryIcon, PlusIcon } from "lucide-solid";
 import {
@@ -14,7 +15,6 @@ import {
 	createEffect,
 	createSignal,
 } from "solid-js";
-import type { Bullet, Entry } from "@/types";
 
 const Page: Component<ComponentProps<typeof Paper>> = (props) => (
 	<Paper
