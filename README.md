@@ -1,16 +1,12 @@
 # Bujo - Bullet Journal App
 
-A web-based bullet journal application built with SolidJS, TypeScript, and Vite.
+A local-first bullet journal web application. All data stays in your browser.
 
 ## Tech Stack
 
 - **Frontend:** SolidJS + TypeScript
 - **Styling:** TailwindCSS
-- **Database:** PGlite (PostgreSQL in WASM)
+- **Database:** SQLite (via sqlocal WASM)
 - **ORM:** Drizzle
 - **Build Tool:** Vite
 - **Package Manager:** Bun
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
