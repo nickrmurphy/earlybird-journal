@@ -49,6 +49,7 @@ describe("throttle", () => {
 	it("preserves 'this' context", async () => {
 		const context = {
 			value: 42,
+			// biome-ignore lint/suspicious/noExplicitAny: Testing context preservation with any type
 			fn: function (this: any, x: number) {
 				return this.value + x;
 			},
